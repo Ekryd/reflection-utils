@@ -1,0 +1,52 @@
+package refutils.testclasses;
+
+import java.io.FileNotFoundException;
+
+/**
+ * @author bjorn
+ * @since 2013-10-01
+ */
+public class SuperClass implements Interface {
+    private long longPrivate;
+    private final byte bytePrivateFinal;
+    int intPackage;
+    protected boolean boolProtected;
+    private String stringPrivate;
+    protected Runnable override;
+    private FileNotFoundException fnfex;
+
+    public SuperClass(byte bytePrivateFinal) {
+        this.bytePrivateFinal = bytePrivateFinal;
+    }
+
+    @Override
+    public int interfaceMethod(long f) {
+        return 0;
+    }
+
+    public boolean isBoolProtected() {
+        return boolProtected;
+    }
+
+    public int getIntPackage() {
+        return intPackage;
+    }
+
+    public long getLongPrivate() {
+        return longPrivate;
+    }
+
+    public String getStringPrivate() {
+        return stringPrivate;
+    }
+
+    public byte getBytePrivateFinal() {
+        return bytePrivateFinal;
+    }
+    
+    public Runnable getSuperOverride() {
+        return override;
+    }
+    
+    
+}
