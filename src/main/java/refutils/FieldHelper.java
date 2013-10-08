@@ -72,6 +72,7 @@ class FieldHelper {
         return returnValue;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     private boolean isMatchedPrimitive(Class<?> fieldType) {
         if (matchPrimitive(fieldType, int.class, Integer.class)) {
             return true;

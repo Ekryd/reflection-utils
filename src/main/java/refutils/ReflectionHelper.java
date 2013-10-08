@@ -56,6 +56,7 @@ public final class ReflectionHelper {
         fieldHelper.setValue(instance, fieldValue);
     }
 
+    @SuppressWarnings("UnnecessaryLocalVariable")
     public Object getField(String fieldName) throws SecurityException, NoSuchFieldException, IllegalArgumentException,
             IllegalAccessException {
         FieldHelper fieldHelper = new FieldHelper(instance.getClass(), fieldName);
