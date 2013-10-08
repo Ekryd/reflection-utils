@@ -4,7 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Utilityclass to handle constructors.
+ * Utility class to handle constructors.
  *
  * @param <T>
  * @author exbjek
@@ -25,7 +25,7 @@ final class ConstructorHelper<T> {
         try {
             return tryToInstantiatePrivate();
         } catch (Exception ex) {
-            throw new RuntimeException(String.format("Cannot instantiate Class: %s constructor", clazz.getName()), ex);
+            throw new IllegalArgumentException(String.format("Cannot instantiate Class: %s constructor", clazz.getName()), ex);
         }
     }
 

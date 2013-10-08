@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class FieldExtractor {
+class FieldExtractor {
     private final Set<Field> allFields = new TreeSet<Field>(new FieldComparator());
     private final Class instanceClass;
 

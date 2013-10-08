@@ -29,13 +29,13 @@ public final class ReflectionHelper {
 
     /**
      * Sets a private or protected field for an object. This method uses
-     * type-matchning to set the field. This method can be used if a class only
+     * type-matching to set the field. This method can be used if a class only
      * has one field of the specified type.
      *
      * @param fieldValue The value that the field should be set to.
      * @throws IllegalAccessException Thrown if the field is final
      */
-    public void setField(final Object fieldValue) throws IllegalAccessException {
+    public void setField(final Object fieldValue) throws IllegalAccessException, NoSuchFieldException {
         FieldHelper fieldHelper = new FieldHelper(instance.getClass(), fieldValue.getClass());
         fieldHelper.setValue(instance, fieldValue);
     }
@@ -47,7 +47,7 @@ public final class ReflectionHelper {
      *
      * @param fieldName  The name of the field
      * @param fieldValue The value that the field should be set to.
-     * @throws NoSuchFieldException   Thrown if the fieldname is incorrect
+     * @throws NoSuchFieldException   Thrown if the field name is incorrect
      * @throws IllegalAccessException Thrown if the field is final
      */
     public void setField(final String fieldName, final Object fieldValue) throws NoSuchFieldException,
@@ -64,7 +64,7 @@ public final class ReflectionHelper {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getField(Class<T> fieldClass) throws IllegalArgumentException, IllegalAccessException {
+    public <T> T getField(Class<T> fieldClass) throws IllegalAccessException, NoSuchFieldException {
         FieldHelper fieldHelper = new FieldHelper(instance.getClass(), fieldClass);
         Object returnValue = fieldHelper.getValue(instance);
         return (T) returnValue;

@@ -7,7 +7,7 @@ import java.util.Comparator;
  * @author bjorn
  * @since 2013-10-07
  */
-public class FieldComparator implements Comparator<Field> {
+    class FieldComparator implements Comparator<Field> {
         @Override
         public int compare(Field field, Field field2) {
             int compare = field.getName().compareTo(field2.getName());

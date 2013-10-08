@@ -7,6 +7,10 @@ package refutils.testclasses;
 public class SubClass extends SuperClass {
     private String stringPrivate2;
     private Runnable override;
+    private double aDouble;
+    private short aShort;
+    private byte aByte;
+    private char aChar;
 
     private SubClass() {
         super((byte) 0);

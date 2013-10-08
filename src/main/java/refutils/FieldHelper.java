@@ -4,33 +4,29 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 class FieldHelper {
-    private final Class<?> instanceClass;
     private final Class<?> valueClass;
     private final Collection<Field> allFields;
 
     private final Field field;
     
-    public FieldHelper(Class instanceClass, String fieldName) throws SecurityException,
-            NoSuchFieldException {
-        this.instanceClass = instanceClass;
+    public FieldHelper(Class instanceClass, String fieldName) throws NoSuchFieldException {
         this.valueClass = null;
         this.allFields = new FieldExtractor(instanceClass).getAllFields();
 
         field = getField(fieldName);
     }
 
-   private Field getField(String fieldName) {
+   private Field getField(String fieldName) throws NoSuchFieldException {
         for (Field field : allFields) {
             if (field.getName().equals(fieldName)) {
                 return field;
             }
         }
-        throw new IllegalArgumentException(String.format("Cannot find field named %s", fieldName));
+        throw new NoSuchFieldException(String.format("Cannot find visible field named %s", fieldName));
     }
 
-    public FieldHelper(Class instanceClass, Class<?> valueClass) {
+    public FieldHelper(Class instanceClass, Class<?> valueClass) throws NoSuchFieldException {
         this.valueClass = valueClass;
-        this.instanceClass = instanceClass;
         checkForObjectValueClass();
 
         this.allFields = new FieldExtractor(instanceClass).getAllFields();
@@ -43,12 +39,12 @@ class FieldHelper {
         }
     }
 
-    private Field getMatchingField() {
+    private Field getMatchingField() throws NoSuchFieldException {
         Collection<Field> matchingFields = allFields;
 
         matchingFields = filterOnTypeMatches(matchingFields);
         if (matchingFields.size() == 0) {
-            throw new IllegalArgumentException(String.format("Cannot find field for %s", valueClass));
+            throw new NoSuchFieldException(String.format("Cannot find visible field for %s", valueClass));
         }
         if (matchingFields.size() > 1) {
             throw new IllegalArgumentException(String.format("Found %s matches for field %s %s", matchingFields.size(),
