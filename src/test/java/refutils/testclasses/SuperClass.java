@@ -14,6 +14,10 @@ public class SuperClass implements Interface {
     private String stringPrivate;
     protected Runnable override;
     private FileNotFoundException fnfex;
+    public Object anObject;
+    protected Float aFloat;
+    protected float aFloat2;
+    
 
     public SuperClass(byte bytePrivateFinal) {
         this.bytePrivateFinal = bytePrivateFinal;

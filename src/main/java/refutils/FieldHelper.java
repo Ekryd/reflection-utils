@@ -46,7 +46,7 @@ class FieldHelper {
 
     private boolean startsWith(String string, String... matches) {
         for (String match : matches) {
-            if (string.matches(match)) {
+            if (string.startsWith(match)) {
                 return true;
             }
         }
@@ -85,16 +85,19 @@ class FieldHelper {
             throw new IllegalArgumentException(String.format("Cannot find field for %s", valueClass));
         }
         if (matchingFields.size() > 1) {
-            throw new IllegalArgumentException(String.format("Found %s matches for field %s", matchingFields.size(),
-                    valueClass));
+            throw new IllegalArgumentException(String.format("Found %s matches for field %s %s", matchingFields.size(),
+                    valueClass, extractFieldNames(matchingFields)));
         }
 
         return matchingFields.iterator().next();
     }
 
-    private Collection<Field> getAllFields() {
-        LinkedHashSet<Field> returnValue = new LinkedHashSet<Field>();
-        return returnValue;
+    private String extractFieldNames(Collection<Field> matchingFields) {
+        List<String> fieldNames = new ArrayList<String>();
+        for (Field matchingField : matchingFields) {
+            fieldNames.add(matchingField.getName());
+        }
+        return fieldNames.toString();
     }
 
     private Collection<Field> filterOnTypeMatches(Collection<Field> fieldMatches) {

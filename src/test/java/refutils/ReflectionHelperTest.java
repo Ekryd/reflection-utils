@@ -4,6 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import refutils.testclasses.SubClass;
+import refutils.testclasses.SubClassToThread;
 import refutils.testclasses.SuperClass;
 
 import java.io.FileNotFoundException;
@@ -110,6 +111,62 @@ public class ReflectionHelperTest {
         
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
         reflectionHelper.setField(new FileNotFoundException());
+    }
+
+    @Test
+    public void inheritedFieldsFromStandardLibraryShouldNotBeVisible() throws Exception {
+        SubClassToThread instance = new SubClassToThread();
+
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
+        reflectionHelper.setField(34);
+
+        reflectionHelper = new ReflectionHelper(instance);
+        assertThat((Integer) reflectionHelper.getField("something"), is(34));
+        assertThat(reflectionHelper.getField(Integer.class), is(34));
+    }
+
+    @Test
+    public void classWithoutSuperClassShouldNotCrash() throws Exception {
+        Object instance = new Object();
+
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage(is("Cannot find field for class java.lang.Integer"));
+
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
+        reflectionHelper.setField(34);
+    }
+
+    @Test
+    public void objectInstanceShouldNotBeSetWithClassReference() throws Exception {
+        SubClass instance = new SubClass((byte) 0);
+
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage(is("Cannot match Object.class type parameter, you must specify it by name"));
+
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
+        reflectionHelper.setField(new Object());
+    }
+
+    @Test
+    public void objectInstanceShouldBeSetWithNameReference() throws Exception {
+        SubClass instance = new SubClass((byte) 0);
+
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
+        reflectionHelper.setField("anObject", new Object());
+
+        reflectionHelper = new ReflectionHelper(instance);
+        assertThat(reflectionHelper.getField("anObject"), not(nullValue()));
+    }
+
+    @Test
+    public void primitiveAndClassFieldsShouldBeCountedAsSame() throws Exception {
+        SubClass instance = new SubClass((byte) 0);
+
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage(is("Found 2 matches for field class java.lang.Float [aFloat, aFloat2]"));
+
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
+        reflectionHelper.setField(54f);
     }
 
     @Test

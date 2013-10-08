@@ -1,7 +1,5 @@
 package refutils;
 
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * This class is used to set protected fields in classes and access private
  * constructors.
@@ -70,11 +68,6 @@ public final class ReflectionHelper {
         FieldHelper fieldHelper = new FieldHelper(instance.getClass(), fieldClass);
         Object returnValue = fieldHelper.getValue(instance);
         return (T) returnValue;
-    }
-
-    public Object executeMethod(String methodName, Object... invocationValues) throws InvocationTargetException, IllegalAccessException {
-        MethodHelper methodHelper = new MethodHelper(instance, methodName, invocationValues);
-        return methodHelper.invoke();
     }
 
 }
