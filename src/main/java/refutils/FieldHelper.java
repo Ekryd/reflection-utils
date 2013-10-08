@@ -1,59 +1,25 @@
 package refutils;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.*;
 
 class FieldHelper {
     private final Class<?> instanceClass;
     private final Class<?> valueClass;
-
-    private final Set<Field> allFields = new TreeSet<Field>(new FieldComparator());
+    private final Collection<Field> allFields;
 
     private final Field field;
-
+    
     public FieldHelper(Class instanceClass, String fieldName) throws SecurityException,
             NoSuchFieldException {
         this.instanceClass = instanceClass;
         this.valueClass = null;
+        this.allFields = new FieldExtractor(instanceClass).getAllFields();
 
-        scanForFields();
         field = getField(fieldName);
     }
 
-    private void scanForFields() {
-        allFields.addAll(Arrays.asList(instanceClass.getDeclaredFields()));
-        scanForFieldsWithoutPrivate(instanceClass.getSuperclass());
-    }
-
-    private void scanForFieldsWithoutPrivate(Class<?> clazz) {
-        if (clazz == null) {
-            return;
-        }
-        String packageName = clazz.getPackage().getName();
-        if (startsWith(packageName, "java.", "javax.", "sun.", "sunw.")) {
-            return;
-        }
-
-        Field[] declaredFields = clazz.getDeclaredFields();
-        for (Field field : declaredFields) {
-            if (!(Modifier.isPrivate(field.getModifiers()))) {
-                allFields.add(field);
-            }
-        }
-        scanForFieldsWithoutPrivate(clazz.getSuperclass());
-    }
-
-    private boolean startsWith(String string, String... matches) {
-        for (String match : matches) {
-            if (string.startsWith(match)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private Field getField(String fieldName) {
+   private Field getField(String fieldName) {
         for (Field field : allFields) {
             if (field.getName().equals(fieldName)) {
                 return field;
@@ -67,10 +33,10 @@ class FieldHelper {
         this.instanceClass = instanceClass;
         checkForObjectValueClass();
 
-        scanForFields();
+        this.allFields = new FieldExtractor(instanceClass).getAllFields();
         field = getMatchingField();
     }
-
+    
     private void checkForObjectValueClass() {
         if (valueClass == Object.class) {
             throw new IllegalArgumentException("Cannot match Object.class type parameter, you must specify it by name");
