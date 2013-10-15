@@ -6,10 +6,21 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * Extracts all visible fields for a class. Visible fields are private, package protected, protected and public fields
+ * of the class and package protected, protected and public fields of existing superclasses.
+ * Fields that are hidden (same name and type) by a subclass are not available.
+ * Internal fields in classes from Sun are not available
+ */
 class FieldExtractor {
     private final Set<Field> allFields = new TreeSet<Field>(new FieldComparator());
     private final Class instanceClass;
 
+    /**
+     * Extracts all fields for a class
+     *
+     * @param instanceClass the instance containing the fields
+     */
     public FieldExtractor(Class instanceClass) {
         this.instanceClass = instanceClass;
         scanForFields();
@@ -38,7 +49,7 @@ class FieldExtractor {
         scanForFieldsWithoutPrivate(clazz.getSuperclass());
     }
 
-    boolean startsWith(String string, String... matches) {
+    private boolean startsWith(String string, String... matches) {
         for (String match : matches) {
             if (string.startsWith(match)) {
                 return true;
@@ -47,6 +58,7 @@ class FieldExtractor {
         return false;
     }
 
+    /** Returns all visible fields. */
     public Set<Field> getAllFields() {
         return allFields;
     }

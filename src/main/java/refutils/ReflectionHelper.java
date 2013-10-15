@@ -9,7 +9,7 @@ public final class ReflectionHelper {
     private final Object instance;
 
     /**
-     * Instantiates a new reflection helper.
+     * Instantiates a new reflection helper with the instance where the reflection operations are performed.
      *
      * @param instance the instance
      */
@@ -28,12 +28,12 @@ public final class ReflectionHelper {
     }
 
     /**
-     * Sets a private or protected field for an object. This method uses
-     * type-matching to set the field. This method can be used if a class only
+     * Sets a value for a field in the instance object. The method uses
+     * type-matching to set the field. This method can only be used if a class 
      * has one field of the specified type.
      *
      * @param fieldValue The value that the field should be set to.
-     * @throws IllegalAccessException Thrown if the field is final
+     * @throws IllegalAccessException Thrown if the field is final or otherwise inaccessable
      */
     public void setField(final Object fieldValue) throws IllegalAccessException, NoSuchFieldException {
         FieldHelper fieldHelper = new FieldHelper(instance.getClass(), fieldValue.getClass());
@@ -41,14 +41,13 @@ public final class ReflectionHelper {
     }
 
     /**
-     * Sets a named private or protected field for an object. Use the
-     * type-matching setter if possible. This method can be used if a class only
+     * Sets a value for a field in the instance object. This method can be used if a class
      * has more than one field of the specified type.
      *
      * @param fieldName  The name of the field
      * @param fieldValue The value that the field should be set to.
      * @throws NoSuchFieldException   Thrown if the field name is incorrect
-     * @throws IllegalAccessException Thrown if the field is final
+     * @throws IllegalAccessException Thrown if the field is final or otherwise inaccessable
      */
     public void setField(final String fieldName, final Object fieldValue) throws NoSuchFieldException,
             IllegalAccessException {
@@ -56,6 +55,15 @@ public final class ReflectionHelper {
         fieldHelper.setValue(instance, fieldValue);
     }
 
+    /**
+     * Gets the value of a field in the instance object. This method can be used if a class
+     * has more than one field of the specified type. The returned value must be casted to the field class.
+     *
+     * @param fieldName  The name of the field
+     * @throws NoSuchFieldException   Thrown if the field name is incorrect
+     * @throws IllegalAccessException Thrown if the field is final or otherwise inaccessable
+     * @return the value of the field
+     */
     @SuppressWarnings("UnnecessaryLocalVariable")
     public Object getField(String fieldName) throws SecurityException, NoSuchFieldException, IllegalArgumentException,
             IllegalAccessException {
@@ -64,6 +72,16 @@ public final class ReflectionHelper {
         return returnValue;
     }
 
+    /**
+     *  Gets the value of a field in the instance object. The method uses
+     * type-matching to set the field. This method can only be used if a class 
+     * has one field of the specified type.
+     * @param fieldClass the class of the field 
+     * @param <T> field class
+     * @return the value of the field with the right type
+     * @throws IllegalAccessException
+     * @throws NoSuchFieldException
+     */
     @SuppressWarnings("unchecked")
     public <T> T getField(Class<T> fieldClass) throws IllegalAccessException, NoSuchFieldException {
         FieldHelper fieldHelper = new FieldHelper(instance.getClass(), fieldClass);

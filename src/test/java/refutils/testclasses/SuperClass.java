@@ -1,5 +1,6 @@
 package refutils.testclasses;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 /**
@@ -17,7 +18,8 @@ public class SuperClass implements Interface {
     public Object anObject;
     protected Float aFloat;
     protected float aFloat2;
-    
+    protected static File file;
+
 
     public SuperClass(byte bytePrivateFinal) {
         this.bytePrivateFinal = bytePrivateFinal;
@@ -47,10 +49,10 @@ public class SuperClass implements Interface {
     public byte getBytePrivateFinal() {
         return bytePrivateFinal;
     }
-    
+
     public Runnable getSuperOverride() {
         return override;
     }
-    
-    
+
+
 }

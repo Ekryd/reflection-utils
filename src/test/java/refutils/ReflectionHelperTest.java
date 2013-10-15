@@ -7,21 +7,21 @@ import refutils.testclasses.SubClass;
 import refutils.testclasses.SuperClass;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class ReflectionHelperTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-    
+
     @Test
     public void instantiateWithNoDefaultConstructorShouldThrowException() {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage(is("Cannot instantiate Class: refutils.testclasses.SuperClass constructor"));
-        
+
         ReflectionHelper.instantiatePrivateConstructor(SuperClass.class);
     }
-    
+
     @Test
     public void settingPrimitiveFieldShouldSetValue() throws Exception {
         SuperClass instance = new SuperClass((byte) 0);
