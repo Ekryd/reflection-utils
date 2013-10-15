@@ -8,6 +8,7 @@ import refutils.testclasses.Interface;
 import refutils.testclasses.SubClass;
 import refutils.testclasses.SuperClass;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 import static org.hamcrest.Matchers.*;
@@ -20,13 +21,13 @@ import static org.junit.Assert.assertThat;
 public class FieldHelperTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-    
+
     @Test
     public void settingInheritedPrivateFieldShouldThrowException() throws Exception {
         expectedException.expect(NoSuchFieldException.class);
         expectedException.expectMessage(is("Cannot find visible field for class java.io.FileNotFoundException"));
-        
-        new FieldHelper(SubClass.class,FileNotFoundException.class);
+
+        new FieldHelper(SubClass.class, FileNotFoundException.class);
     }
 
     @Test
@@ -50,7 +51,9 @@ public class FieldHelperTest {
     @Test
     public void primitiveAndClassFieldsShouldBeCountedAsSame() throws Exception {
         expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage(is("Found 2 matches for field class java.lang.Float [aFloat, aFloat2]"));
+        expectedException.expectMessage(is("" +
+                "Found too many (2) matches for field class java.lang.Float [aFloat, aFloat2], " +
+                "specify the field by name instead"));
 
         new FieldHelper(SubClass.class, Float.class);
     }
@@ -59,7 +62,7 @@ public class FieldHelperTest {
     public void settingFieldClassThatDontExistShouldThrowException() throws Exception {
         expectedException.expect(NoSuchFieldException.class);
         expectedException.expectMessage(is("Cannot find visible field for class java.lang.StringBuffer"));
-        
+
         new FieldHelper(SubClass.class, StringBuffer.class);
     }
 
@@ -67,7 +70,7 @@ public class FieldHelperTest {
     public void settingFieldNameThatDontExistShouldThrowException() throws Exception {
         expectedException.expect(NoSuchFieldException.class);
         expectedException.expectMessage(is("Cannot find visible field named gurka"));
-        
+
         new FieldHelper(SubClass.class, "gurka");
     }
 
@@ -77,15 +80,15 @@ public class FieldHelperTest {
         expectedException.expectMessage(is("Can not set java.lang.Runnable field refutils.testclasses.SubClass.override to java.lang.Integer"));
 
         FieldHelper fieldHelper = new FieldHelper(SubClass.class, "override");
-        fieldHelper.setValue(new SubClass((byte)0), 43);
+        fieldHelper.setValue(new SubClass((byte) 0), 43);
     }
 
     @Test
     public void settingNamedFieldWithSubClassShouldWork() throws Exception {
         FieldHelper fieldHelper = new FieldHelper(FieldClass.class, "superClass");
         FieldClass instance = new FieldClass();
-        
-        fieldHelper.setValue(instance, new SubClass((byte)0));
+
+        fieldHelper.setValue(instance, new SubClass((byte) 0));
 
         assertThat(fieldHelper.getValue(instance), not(nullValue()));
     }
@@ -93,7 +96,9 @@ public class FieldHelperTest {
     @Test
     public void fieldsWithCommonSuperClassShouldBeCountedAsSame() throws Exception {
         expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage(is("Found 3 matches for field class refutils.testclasses.SubClass [anInterface, subClass, superClass]"));
+        expectedException.expectMessage(is(
+                "Found too many (3) matches for field class refutils.testclasses.SubClass [anInterface, subClass, superClass], " +
+                        "specify the field by name instead"));
 
         new FieldHelper(FieldClass.class, SubClass.class);
     }
@@ -101,16 +106,18 @@ public class FieldHelperTest {
     @Test
     public void fieldsWithCommonInterfaceShouldBeCountedAsSame() throws Exception {
         expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage(is("Found 2 matches for field class refutils.testclasses.SuperClass [anInterface, superClass]"));
+        expectedException.expectMessage(is(
+                "Found too many (2) matches for field class refutils.testclasses.SuperClass [anInterface, superClass], " +
+                        "specify the field by name instead"));
 
         new FieldHelper(FieldClass.class, SuperClass.class);
     }
 
     @Test
     public void settingInterfaceFieldShouldWork() throws Exception {
-        FieldHelper fieldHelper =  new FieldHelper(FieldClass.class, Interface.class);
+        FieldHelper fieldHelper = new FieldHelper(FieldClass.class, Interface.class);
         FieldClass instance = new FieldClass();
-        
+
         fieldHelper.setValue(instance, new Interface() {
             @Override
             public int interfaceMethod(long f) {
@@ -133,7 +140,7 @@ public class FieldHelperTest {
 
     private void testPrimitive(Object testValue) throws NoSuchFieldException, IllegalAccessException {
         FieldHelper fieldHelper = new FieldHelper(SubClass.class, testValue.getClass());
-        SubClass instance = new SubClass((byte)0);
+        SubClass instance = new SubClass((byte) 0);
 
         fieldHelper.setValue(instance, testValue);
 
@@ -142,4 +149,15 @@ public class FieldHelperTest {
         assertThat(fieldHelper.getValue(instance), is(testValue));
     }
 
+    @Test
+    public void settingStaticProtectedInheritedFieldShouldWork() throws Exception {
+        FieldHelper fieldHelper = new FieldHelper(SubClass.class, File.class);
+        SubClass instance = new SubClass((byte) 0);
+        File fieldValue = new File("gurka.txt");
+
+        fieldHelper.setValue(instance, fieldValue);
+
+        assertThat(fieldHelper.getValue(fieldValue).toString(), is("gurka.txt"));        
+    }
+    
 }
