@@ -6,6 +6,7 @@ import org.junit.rules.ExpectedException;
 import refutils.testclasses.SubClass;
 import refutils.testclasses.SuperClass;
 
+import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -13,6 +14,11 @@ public class ReflectionHelperTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
+    @Test
+    public void instantiatePrivateNonArgConstructorShouldWork() {
+        assertNotNull(ReflectionHelper.instantiatePrivateConstructor(SubClass.class));
+    }
 
     @Test
     public void instantiateWithNoDefaultConstructorShouldThrowException() {

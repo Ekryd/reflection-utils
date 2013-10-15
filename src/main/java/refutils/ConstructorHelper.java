@@ -29,8 +29,7 @@ final class ConstructorHelper<T> {
         }
     }
 
-    private T tryToInstantiatePrivate() throws SecurityException, NoSuchMethodException,
-            IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    private T tryToInstantiatePrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Constructor<T> constructor = clazz.getDeclaredConstructor();
         constructor.setAccessible(true);
         return constructor.newInstance();

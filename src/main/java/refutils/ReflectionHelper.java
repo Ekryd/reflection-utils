@@ -29,7 +29,7 @@ public final class ReflectionHelper {
 
     /**
      * Sets a value for a field in the instance object. The method uses
-     * type-matching to set the field. This method can only be used if a class 
+     * type-matching to set the field. This method can only be used if a class
      * has one field of the specified type.
      *
      * @param fieldValue The value that the field should be set to.
@@ -59,25 +59,23 @@ public final class ReflectionHelper {
      * Gets the value of a field in the instance object. This method can be used if a class
      * has more than one field of the specified type. The returned value must be casted to the field class.
      *
-     * @param fieldName  The name of the field
+     * @param fieldName The name of the field
+     * @return the value of the field
      * @throws NoSuchFieldException   Thrown if the field name is incorrect
      * @throws IllegalAccessException Thrown if the field is final or otherwise inaccessable
-     * @return the value of the field
      */
-    @SuppressWarnings("UnnecessaryLocalVariable")
-    public Object getField(String fieldName) throws SecurityException, NoSuchFieldException, IllegalArgumentException,
-            IllegalAccessException {
+    public Object getField(String fieldName) throws NoSuchFieldException, IllegalAccessException {
         FieldHelper fieldHelper = new FieldHelper(instance.getClass(), fieldName);
-        Object returnValue = fieldHelper.getValue(instance);
-        return returnValue;
+        return fieldHelper.getValue(instance);
     }
 
     /**
-     *  Gets the value of a field in the instance object. The method uses
-     * type-matching to set the field. This method can only be used if a class 
+     * Gets the value of a field in the instance object. The method uses
+     * type-matching to set the field. This method can only be used if a class
      * has one field of the specified type.
-     * @param fieldClass the class of the field 
-     * @param <T> field class
+     *
+     * @param fieldClass the class of the field
+     * @param <T>        field class
      * @return the value of the field with the right type
      * @throws IllegalAccessException
      * @throws NoSuchFieldException
@@ -85,8 +83,7 @@ public final class ReflectionHelper {
     @SuppressWarnings("unchecked")
     public <T> T getField(Class<T> fieldClass) throws IllegalAccessException, NoSuchFieldException {
         FieldHelper fieldHelper = new FieldHelper(instance.getClass(), fieldClass);
-        Object returnValue = fieldHelper.getValue(instance);
-        return (T) returnValue;
+        return (T) fieldHelper.getValue(instance);
     }
 
 }

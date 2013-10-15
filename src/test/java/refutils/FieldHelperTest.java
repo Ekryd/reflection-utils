@@ -157,7 +157,7 @@ public class FieldHelperTest {
 
         fieldHelper.setValue(instance, fieldValue);
 
-        assertThat(fieldHelper.getValue(fieldValue).toString(), is("gurka.txt"));        
+        assertThat(fieldHelper.getValue(fieldValue).toString(), is("gurka.txt"));
     }
-    
+
 }
