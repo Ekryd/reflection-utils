@@ -20,6 +20,9 @@ public class SuperClass implements Interface {
     protected float aFloat2;
     protected static File file;
 
+    private SuperClass() {
+        bytePrivateFinal = 0;
+    }
 
     public SuperClass(byte bytePrivateFinal) {
         this.bytePrivateFinal = bytePrivateFinal;

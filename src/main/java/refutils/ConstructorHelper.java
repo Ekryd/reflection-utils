@@ -21,7 +21,7 @@ final class ConstructorHelper<T> {
      *
      * @return the instance
      */
-    public T instantiatePrivate() {
+    T instantiatePrivate() {
         try {
             return tryToInstantiatePrivate();
         } catch (Exception ex) {

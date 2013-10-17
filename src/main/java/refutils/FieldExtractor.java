@@ -21,7 +21,7 @@ class FieldExtractor {
      *
      * @param instanceClass the instance containing the fields
      */
-    public FieldExtractor(Class instanceClass) {
+    FieldExtractor(Class instanceClass) {
         this.instanceClass = instanceClass;
         scanForFields();
     }
@@ -59,7 +59,7 @@ class FieldExtractor {
     }
 
     /** Returns all visible fields. */
-    public Set<Field> getAllFields() {
+    Set<Field> getAllFields() {
         return allFields;
     }
 }

@@ -36,8 +36,8 @@ public final class ReflectionHelper {
      * @throws IllegalAccessException Thrown if the field is final or otherwise inaccessable
      */
     public void setField(final Object fieldValue) throws IllegalAccessException, NoSuchFieldException {
-        FieldHelper fieldHelper = new FieldHelper(instance.getClass(), fieldValue.getClass());
-        fieldHelper.setValue(instance, fieldValue);
+        FieldHelper fieldHelper = new FieldHelper(instance);
+        fieldHelper.setValue(fieldValue);
     }
 
     /**
@@ -51,8 +51,8 @@ public final class ReflectionHelper {
      */
     public void setField(final String fieldName, final Object fieldValue) throws NoSuchFieldException,
             IllegalAccessException {
-        FieldHelper fieldHelper = new FieldHelper(instance.getClass(), fieldName);
-        fieldHelper.setValue(instance, fieldValue);
+        FieldHelper fieldHelper = new FieldHelper(instance);
+        fieldHelper.setValue(fieldName, fieldValue);
     }
 
     /**
@@ -65,8 +65,8 @@ public final class ReflectionHelper {
      * @throws IllegalAccessException Thrown if the field is final or otherwise inaccessable
      */
     public Object getField(String fieldName) throws NoSuchFieldException, IllegalAccessException {
-        FieldHelper fieldHelper = new FieldHelper(instance.getClass(), fieldName);
-        return fieldHelper.getValue(instance);
+        FieldHelper fieldHelper = new FieldHelper(instance);
+        return fieldHelper.getValue(fieldName);
     }
 
     /**
@@ -80,10 +80,9 @@ public final class ReflectionHelper {
      * @throws IllegalAccessException
      * @throws NoSuchFieldException
      */
-    @SuppressWarnings("unchecked")
     public <T> T getField(Class<T> fieldClass) throws IllegalAccessException, NoSuchFieldException {
-        FieldHelper fieldHelper = new FieldHelper(instance.getClass(), fieldClass);
-        return (T) fieldHelper.getValue(instance);
+        FieldHelper fieldHelper = new FieldHelper(instance);
+        return fieldHelper.getValue(fieldClass);
     }
 
 }

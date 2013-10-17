@@ -1,39 +1,38 @@
 package refutils;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import refutils.testclasses.AbstractClass;
-import refutils.testclasses.SubClass;
+import refutils.testclasses.SubClassToThread;
 import refutils.testclasses.SuperClass;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 public class ConstructorHelperTest {
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     @Test
     public void instantiatePrivateNonArgConstructorShouldWork() {
-        assertNotNull(new ConstructorHelper(SubClass.class).instantiatePrivate());
+        assertNotNull(new ConstructorHelper(SuperClass.class).instantiatePrivate());
     }
 
     @Test
     public void instantiateWithNoDefaultConstructorShouldThrowException() {
-        try {
-            assertNotNull(new ConstructorHelper(SuperClass.class).instantiatePrivate());
-            fail();
-        } catch (Exception e) {
-            assertThat(e.getMessage(), is("Cannot instantiate Class: refutils.testclasses.SuperClass constructor"));
-        }
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage(is("Cannot instantiate Class: refutils.testclasses.SubClassToThread constructor"));
+
+        assertNotNull(new ConstructorHelper(SubClassToThread.class).instantiatePrivate());
     }
 
     @Test
     public void instantiateAbstractShouldThrowException() {
-        try {
-            assertNotNull(new ConstructorHelper(AbstractClass.class).instantiatePrivate());
-            fail();
-        } catch (Exception e) {
-            assertThat(e.getMessage(), is("Cannot instantiate Class: refutils.testclasses.AbstractClass constructor"));
-        }
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage(is("Cannot instantiate Class: refutils.testclasses.AbstractClass constructor"));
+
+        assertNotNull(new ConstructorHelper(AbstractClass.class).instantiatePrivate());
     }
 }

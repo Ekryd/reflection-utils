@@ -12,12 +12,8 @@ public class SubClass extends SuperClass {
     private byte aByte;
     private char aChar;
 
-    private SubClass() {
+    public SubClass() {
         super((byte) 0);
-    }
-
-    public SubClass(byte bytePrivateFinal) {
-        super(bytePrivateFinal);
     }
 
     public String getStringPrivate2() {

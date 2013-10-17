@@ -4,6 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import refutils.testclasses.SubClass;
+import refutils.testclasses.SubClassToThread;
 import refutils.testclasses.SuperClass;
 
 import static junit.framework.Assert.assertNotNull;
@@ -23,9 +24,9 @@ public class ReflectionHelperTest {
     @Test
     public void instantiateWithNoDefaultConstructorShouldThrowException() {
         expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage(is("Cannot instantiate Class: refutils.testclasses.SuperClass constructor"));
+        expectedException.expectMessage(is("Cannot instantiate Class: refutils.testclasses.SubClassToThread constructor"));
 
-        ReflectionHelper.instantiatePrivateConstructor(SuperClass.class);
+        ReflectionHelper.instantiatePrivateConstructor(SubClassToThread.class);
     }
 
     @Test
@@ -56,7 +57,7 @@ public class ReflectionHelperTest {
 
     @Test
     public void settingInheritedFieldShouldSetValueInSuperClass() throws Exception {
-        SubClass instance = new SubClass((byte) 0);
+        SubClass instance = new SubClass();
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
         reflectionHelper.setField(34);
 
@@ -65,7 +66,7 @@ public class ReflectionHelperTest {
 
     @Test
     public void settingNamedFieldShouldSetValue() throws Exception {
-        SubClass instance = new SubClass((byte) 0);
+        SubClass instance = new SubClass();
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
         reflectionHelper.setField("intPackage", 34);
 

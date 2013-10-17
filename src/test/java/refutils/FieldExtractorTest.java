@@ -65,7 +65,6 @@ public class FieldExtractorTest {
         @Override
         protected boolean matchesSafely(Field item) {
             String name = item.getDeclaringClass().getName();
-            System.out.println(name);
             return !name.startsWith("java");
         }
 
