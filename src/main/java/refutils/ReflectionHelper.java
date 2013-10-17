@@ -33,7 +33,7 @@ public final class ReflectionHelper {
      * has one field of the specified type.
      *
      * @param fieldValue The value that the field should be set to.
-     * @throws IllegalAccessException Thrown if the field is final or otherwise inaccessable
+     * @throws IllegalAccessException Thrown if the field is final or otherwise inaccessible
      */
     public void setField(final Object fieldValue) throws IllegalAccessException, NoSuchFieldException {
         FieldHelper fieldHelper = new FieldHelper(instance);
@@ -47,7 +47,7 @@ public final class ReflectionHelper {
      * @param fieldName  The name of the field
      * @param fieldValue The value that the field should be set to.
      * @throws NoSuchFieldException   Thrown if the field name is incorrect
-     * @throws IllegalAccessException Thrown if the field is final or otherwise inaccessable
+     * @throws IllegalAccessException Thrown if the field is final or otherwise inaccessible
      */
     public void setField(final String fieldName, final Object fieldValue) throws NoSuchFieldException,
             IllegalAccessException {
@@ -62,7 +62,7 @@ public final class ReflectionHelper {
      * @param fieldName The name of the field
      * @return the value of the field
      * @throws NoSuchFieldException   Thrown if the field name is incorrect
-     * @throws IllegalAccessException Thrown if the field is final or otherwise inaccessable
+     * @throws IllegalAccessException Thrown if the field is final or otherwise inaccessible
      */
     public Object getField(String fieldName) throws NoSuchFieldException, IllegalAccessException {
         FieldHelper fieldHelper = new FieldHelper(instance);

@@ -33,11 +33,11 @@ class FieldHelper {
      */
     Object getValue(String fieldName) throws IllegalAccessException, NoSuchFieldException {
         Field field = getFieldByName(fieldName);
-        MakeFieldAccessable makeFieldAccessable = new MakeFieldAccessable(field);
+        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
 
         Object returnValue = field.get(instance);
 
-        makeFieldAccessable.restoreAccessState();
+        makeFieldAccessible.restoreAccessState();
 
         return returnValue;
     }
@@ -54,11 +54,11 @@ class FieldHelper {
         checkForObjectValueClass(valueClass);
 
         Field field = getFieldByType(valueClass);
-        MakeFieldAccessable makeFieldAccessable = new MakeFieldAccessable(field);
+        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
 
         Object returnValue = field.get(instance);
 
-        makeFieldAccessable.restoreAccessState();
+        makeFieldAccessible.restoreAccessState();
 
         return (T) returnValue;
     }
@@ -73,11 +73,11 @@ class FieldHelper {
      */
     void setValue(String fieldName, Object value) throws IllegalAccessException, NoSuchFieldException {
         Field field = getFieldByName(fieldName);
-        MakeFieldAccessable makeFieldAccessable = new MakeFieldAccessable(field);
+        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
 
         field.set(instance, value);
 
-        makeFieldAccessable.restoreAccessState();
+        makeFieldAccessible.restoreAccessState();
     }
 
     /**
@@ -91,11 +91,11 @@ class FieldHelper {
         checkForObjectValueClass(value.getClass());
 
         Field field = getFieldByType(value.getClass());
-        MakeFieldAccessable makeFieldAccessable = new MakeFieldAccessable(field);
+        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
 
         field.set(instance, value);
 
-        makeFieldAccessable.restoreAccessState();
+        makeFieldAccessible.restoreAccessState();
     }
 
     private Field getFieldByName(String fieldName) throws NoSuchFieldException {
