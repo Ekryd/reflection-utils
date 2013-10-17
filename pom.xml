@@ -10,7 +10,7 @@
 
   <groupId>com.google.code.reflection-utils</groupId>
   <artifactId>reflection-utils</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2-SNAPSHOT</version>
   <name>Reflection utils</name>
   <description>A utility library to handle Java reflection with ease</description>
 
