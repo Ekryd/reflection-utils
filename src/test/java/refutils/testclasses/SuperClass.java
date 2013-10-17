@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
  * @author bjorn
  * @since 2013-10-01
  */
+@SuppressWarnings("UnusedDeclaration")
 public class SuperClass implements Interface {
     private long longPrivate;
     private final byte bytePrivateFinal;

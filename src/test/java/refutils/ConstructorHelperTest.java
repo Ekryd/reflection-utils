@@ -10,6 +10,7 @@ import refutils.testclasses.SuperClass;
 import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.Matchers.is;
 
+@SuppressWarnings("unchecked")
 public class ConstructorHelperTest {
 
     @Rule

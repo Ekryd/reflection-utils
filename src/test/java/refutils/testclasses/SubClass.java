@@ -4,6 +4,7 @@ package refutils.testclasses;
  * @author bjorn
  * @since 2013-10-01
  */
+@SuppressWarnings("UnusedDeclaration")
 public class SubClass extends SuperClass {
     private String stringPrivate2;
     private Runnable override;
