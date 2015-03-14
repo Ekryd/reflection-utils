@@ -1,0 +1,165 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on https://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>Reflection-utils</title>
+  <meta name="description" content="A utility library to handle Java reflection with ease">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Reflection-utils</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">A utility library to handle Java reflection with ease</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/Ekryd/reflection-utils/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/Ekryd/reflection-utils/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/Ekryd/reflection-utils" class="code">View Reflection-utils on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <p>This library will make it easier to get and set internal fields in classes using java reflection. The library is optimized for conveniance and not for speed, so it works best with unit tests.</p>
+
+<p>Mocking is great! Sometimes the easiest way to insert mocks are by Java reflection. Especially if you cannot use constructor arguments or setter methods.</p>
+
+<h2>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h2>
+
+<pre><code>    @Test
+    public void storeMethodShouldSaveEntity() throws Exception {
+        // Setup entities
+        EntityHandler handler = new EntityHandlerImpl();        
+        StoreDao storeDao = mock(StoreDao.class);
+
+        // Insert mock into handler
+        new ReflectionHelper(handler).setField(storeDao);
+
+        // Perform method
+        handler.store();
+
+        // Verify save method
+        verify(storeDao).save();
+    }
+</code></pre>
+
+<p>The ReflectionHelper will insert the mocked object into the handler</p>
+
+<ul>
+<li>You don't need to use complicated reflection code.</li>
+<li>You don't need to specify field name; if only one field fits then that field will be used.</li>
+<li>If the field cannot be found, then user friendly exceptions are sent.</li>
+</ul>
+
+<h2>
+<a id="methods" class="anchor" href="#methods" aria-hidden="true"><span class="octicon octicon-link"></span></a>Methods</h2>
+
+<p>The Reflection helper have 5 methods:</p>
+
+<p><strong>ABC abc = ReflectionHelper.instantiatePrivateConstructor(ABC.class)</strong> will create a new instance of ABC by invoking a (private) constructor with no arguments. This method can be used for getting hard-to-reach coverage for utility classes.</p>
+
+<p><strong>new ReflectionHelper(abc).setField(value)</strong> will insert the value into the instance abc. This method can be used to insert stubs or mocks into other classes. ReflectionHelper will determine which field that should be set by comparing class types or assignable types. Setting an interface type to a concrete class value is no problem.</p>
+
+<p><strong>new ReflectionHelper(abc).setField("name", value)</strong> will insert the value into the instance abc for a named field. This method can be used to insert setup parameters where there are multiple fields that have the same type.</p>
+
+<p><strong>ValueClass value = new ReflectionHelper(abc).getField(ValueClass.class)</strong> will return the current value for the field of a specified class.</p>
+
+<p><strong>ValueClass value = (ValueClass) new ReflectionHelper(abc).getField("name")</strong> will return the current value for a named field.</p>
+
+<h2>
+<a id="download" class="anchor" href="#download" aria-hidden="true"><span class="octicon octicon-link"></span></a>Download</h2>
+
+<p>Maven users can add this library with the following addition to their pom.xml file.</p>
+
+<pre><code>  ...
+
+  &lt;dependencies&gt;
+    ...
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.google.code.reflection-utils&lt;/groupId&gt;
+      &lt;artifactId&gt;reflection-utils&lt;/artifactId&gt;
+      &lt;version&gt;0.0.1&lt;/version&gt;
+      &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+
+  ...
+</code></pre>
+
+<h2>
+<a id="scope" class="anchor" href="#scope" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scope</h2>
+
+<p>The visibility scope of the fields are like this:</p>
+
+<ul>
+<li>Fields that are private, protected, package protected or public in the instance class can be set with the ReflectionHelper</li>
+<li>Fields that are protected, package protected or public in the superclasses of the instance class can be set with the ReflectionHelper</li>
+<li>Fields that are hidden (same name and type) by a subclass are not available to the ReflectionHelper</li>
+<li>Internal fields in classes from Sun are not available</li>
+<li>Final fields cannot be changed</li>
+<li>If two or more fields can be set by the same value, then the name of the field must be specified</li>
+</ul>
+
+<h2>
+<a id="why" class="anchor" href="#why" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why</h2>
+
+<p>This framework was created for the following reasons:</p>
+
+<ul>
+<li>I don't like setting fields to package protected just because some unit tests have to change values</li>
+<li>I don't like extra setter-methods, that are only placed in the class just because some unit tests have to change values</li>
+<li>Spring is very nice, but maintaining large xml configurations for tests can be difficult</li>
+<li>I do like test coverage even if I am working with legacy code which cannot or must not be changed</li>
+<li>Setting and getting values by class type instead of name helps a lot when refactoring code</li>
+<li>This reflection code has been used by me since 2008 and it makes sense to gather it into a framework</li>
+</ul>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/Ekryd" class="avatar"><img src="https://avatars3.githubusercontent.com/u/851407?v=3&amp;s=60" width="48" height="48"></a> <a href="https://github.com/Ekryd">Ekryd</a> maintains <a href="https://github.com/Ekryd/reflection-utils">Reflection-utils</a></p>
+
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/Ekryd/reflection-utils/tarball/master" class="tar">tar</a><a href="https://github.com/Ekryd/reflection-utils/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-60761130-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+</body>
+</html>
