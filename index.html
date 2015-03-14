@@ -1,50 +1,40 @@
 <!doctype html>
-<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
-<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on https://github.com/jonrohan -->
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Reflection-utils by Ekryd</title>
 
-  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
-  <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script type="text/javascript" src="javascripts/script.js"></script>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-  <title>Reflection-utils</title>
-  <meta name="description" content="A utility library to handle Java reflection with ease">
-
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-
-</head>
-
-<body>
-
-  <div class="wrapper">
-    <header>
-      <h1 class="title">Reflection-utils</h1>
-    </header>
-    <div id="container">
-      <p class="tagline">A utility library to handle Java reflection with ease</p>
-      <div id="main" role="main">
-        <div class="download-bar">
-        <div class="inner">
-          <a href="https://github.com/Ekryd/reflection-utils/tarball/master" class="download-button tar"><span>Download</span></a>
-          <a href="https://github.com/Ekryd/reflection-utils/zipball/master" class="download-button zip"><span>Download</span></a>
-          <a href="https://github.com/Ekryd/reflection-utils" class="code">View Reflection-utils on GitHub</a>
-        </div>
-        <span class="blc"></span><span class="trc"></span>
-        </div>
-        <article class="markdown-body">
-          <p>This library will make it easier to get and set internal fields in classes using java reflection. The library is optimized for conveniance and not for speed, so it works best with unit tests.</p>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Reflection-utils</h1>
+        <p>A utility library to handle Java reflection with ease</p>
+        <p class="view"><a href="https://github.com/Ekryd/reflection-utils">View the Project on GitHub <small>Ekryd/reflection-utils</small></a></p>
+        <ul>
+          <li><a href="https://github.com/Ekryd/reflection-utils/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Ekryd/reflection-utils/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/Ekryd/reflection-utils">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>This library will make it easier to get and set internal fields in classes using java reflection. The library is optimized for conveniance and not for speed, so it works best with unit tests.</p>
 
 <p>Mocking is great! Sometimes the easiest way to insert mocks are by Java reflection. Especially if you cannot use constructor arguments or setter methods.</p>
 
 <h2>
 <a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h2>
 
-<pre><code>
-    @Test
+<pre><code>    @Test
     public void storeMethodShouldSaveEntity() throws Exception {
         // Setup entities
         EntityHandler handler = new EntityHandlerImpl();        
@@ -131,27 +121,14 @@
 <li>Setting and getting values by class type instead of name helps a lot when refactoring code</li>
 <li>This reflection code has been used by me since 2008 and it makes sense to gather it into a framework</li>
 </ul>
-        </article>
-      </div>
+      </section>
     </div>
     <footer>
-      <div class="owner">
-      <p><a href="https://github.com/Ekryd" class="avatar"><img src="https://avatars3.githubusercontent.com/u/851407?v=3&amp;s=60" width="48" height="48"></a> <a href="https://github.com/Ekryd">Ekryd</a> maintains <a href="https://github.com/Ekryd/reflection-utils">Reflection-utils</a></p>
-
-
-      </div>
-      <div class="creds">
-        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
-      </div>
+      <p>Project maintained by <a href="https://github.com/Ekryd">Ekryd</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
     </footer>
-  </div>
-  <div class="current-section">
-    <a href="#top">Scroll to top</a>
-    <a href="https://github.com/Ekryd/reflection-utils/tarball/master" class="tar">tar</a><a href="https://github.com/Ekryd/reflection-utils/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
-    <p class="name"></p>
-  </div>
-
-            <script type="text/javascript">
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+              <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
@@ -162,5 +139,5 @@
             } catch(err) {}
           </script>
 
-</body>
+  </body>
 </html>
