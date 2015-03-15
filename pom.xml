@@ -2,12 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
-  </parent>
-
   <groupId>com.github.ekryd.reflection-utils</groupId>
   <artifactId>reflection-utils</artifactId>
   <version>0.0.2-SNAPSHOT</version>
@@ -15,7 +9,7 @@
   <description>A utility library to handle Java reflection with ease</description>
 
   <prerequisites>
-    <maven>2.2.1</maven>
+    <maven>3.0.4</maven>
   </prerequisites>
 
   <properties>
@@ -52,6 +46,7 @@
           <target>${compileSource}</target>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>com.google.code.sortpom</groupId>
         <artifactId>maven-sortpom-plugin</artifactId>
@@ -73,6 +68,18 @@
             <phase>verify</phase>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.5</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -113,6 +120,13 @@
     <system>GitHub</system>
     <url>https://github.com/Ekryd/reflection-utils/issues</url>
   </issueManagement>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <!-- Profiles -->
   <profiles>
@@ -174,7 +188,7 @@
               <execution>
                 <id>attach-sources</id>
                 <goals>
-                  <goal>jar</goal>
+                  <goal>jar-no-fork</goal>
                 </goals>
                 <phase>verify</phase>
               </execution>
