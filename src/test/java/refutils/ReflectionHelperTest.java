@@ -1,10 +1,7 @@
 package refutils;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import refutils.testclasses.SubClass;
-import refutils.testclasses.SubClassToThread;
 import refutils.testclasses.SuperClass;
 
 import static junit.framework.Assert.assertNotNull;
@@ -13,20 +10,9 @@ import static org.junit.Assert.assertThat;
 
 public class ReflectionHelperTest {
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
     @Test
     public void instantiatePrivateNonArgConstructorShouldWork() {
         assertNotNull(ReflectionHelper.instantiatePrivateConstructor(SubClass.class));
-    }
-
-    @Test
-    public void instantiateWithNoDefaultConstructorShouldThrowException() {
-        expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage(is("Cannot instantiate Class: refutils.testclasses.SubClassToThread constructor"));
-
-        ReflectionHelper.instantiatePrivateConstructor(SubClassToThread.class);
     }
 
     @Test
@@ -72,6 +58,4 @@ public class ReflectionHelperTest {
 
         assertThat(instance.getIntPackage(), is(34));
     }
-
-
 }

@@ -1,4 +1,4 @@
-package refutils;
+package refutils.util;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThat;
  */
 public class FieldHelperTest {
     @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+    public final ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void gettingInheritedPrivateFieldShouldThrowException() throws Exception {

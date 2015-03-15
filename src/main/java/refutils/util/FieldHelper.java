@@ -1,4 +1,4 @@
-package refutils;
+package refutils.util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
  * Contains utility methods to get and set field value from an instance of a class. The field can be located by class
  * type or field name.
  */
-class FieldHelper {
+public class FieldHelper {
     private final Object instance;
     private final Collection<Field> allFields;
 
@@ -18,7 +18,7 @@ class FieldHelper {
      *
      * @param instance the instance where the fields are located
      */
-    FieldHelper(Object instance) {
+    public FieldHelper(Object instance) {
         this.instance = instance;
         this.allFields = new FieldExtractor(instance.getClass()).getAllFields();
     }
@@ -31,7 +31,7 @@ class FieldHelper {
      * @throws IllegalAccessException if the underlying field is inaccessible.
      * @throws NoSuchFieldException   thrown if field cannot be located
      */
-    Object getValue(String fieldName) throws IllegalAccessException, NoSuchFieldException {
+    public Object getValue(String fieldName) throws IllegalAccessException, NoSuchFieldException {
         Field field = getFieldByName(fieldName);
         MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
 
@@ -45,12 +45,14 @@ class FieldHelper {
     /**
      * Get the value for the matching field by looking at class type.
      *
+     * @param valueClass the class type of field
+     * @param <T>        the type of the field
      * @return the field value
-     * @throws IllegalAccessException if the underlying field is inaccessible.
+     * @throws IllegalAccessException This should never happen, since the field is always made accessible.
      * @throws NoSuchFieldException   thrown if field cannot be located
      */
     @SuppressWarnings("unchecked")
-    <T> T getValue(Class<T> valueClass) throws IllegalAccessException, NoSuchFieldException {
+    public <T> T getValue(Class<T> valueClass) throws IllegalAccessException, NoSuchFieldException {
         checkForObjectValueClass(valueClass);
 
         Field field = getFieldByType(valueClass);
@@ -68,10 +70,10 @@ class FieldHelper {
      *
      * @param fieldName the name of the field
      * @param value     the field value to set
-     * @throws IllegalAccessException if the underlying field is inaccessible.
+     * @throws IllegalAccessException This should never happen, since the field is always made accessible.
      * @throws NoSuchFieldException   thrown if field cannot be located
      */
-    void setValue(String fieldName, Object value) throws IllegalAccessException, NoSuchFieldException {
+    public void setValue(String fieldName, Object value) throws IllegalAccessException, NoSuchFieldException {
         Field field = getFieldByName(fieldName);
         MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
 
@@ -87,7 +89,7 @@ class FieldHelper {
      * @throws IllegalAccessException if the underlying field is inaccessible.
      * @throws NoSuchFieldException   thrown if field cannot be located
      */
-    void setValue(Object value) throws IllegalAccessException, NoSuchFieldException {
+    public void setValue(Object value) throws IllegalAccessException, NoSuchFieldException {
         checkForObjectValueClass(value.getClass());
 
         Field field = getFieldByType(value.getClass());

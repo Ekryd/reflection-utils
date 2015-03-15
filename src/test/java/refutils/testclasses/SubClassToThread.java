@@ -7,7 +7,7 @@ package refutils.testclasses;
 @SuppressWarnings("UnusedDeclaration")
 public class SubClassToThread extends Thread {
     private int something;
-    private RuntimeException rex;
+    private final RuntimeException rex;
 
     public SubClassToThread(RuntimeException rex) {
         this.rex = rex;

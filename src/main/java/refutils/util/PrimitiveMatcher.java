@@ -1,4 +1,4 @@
-package refutils;
+package refutils.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
  * @since 2013-10-17
  */
 class PrimitiveMatcher {
-    private final Class matchedPrimtiveType;
+    private final Class matchedPrimitiveType;
 
     private static final Map<Class, Class> PRIMITIVE_CLASSES_MAP = new LinkedHashMap<Class, Class>();
 
@@ -27,10 +27,10 @@ class PrimitiveMatcher {
     }
 
     PrimitiveMatcher(Class valueClass) {
-        this.matchedPrimtiveType = PRIMITIVE_CLASSES_MAP.get(valueClass);
+        this.matchedPrimitiveType = PRIMITIVE_CLASSES_MAP.get(valueClass);
     }
 
     boolean isMatchedPrimitive(Class<?> type) {
-        return matchedPrimtiveType != null && type.equals(matchedPrimtiveType);
+        return matchedPrimitiveType != null && type.equals(matchedPrimitiveType);
     }
 }

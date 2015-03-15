@@ -1,4 +1,4 @@
-package refutils;
+package refutils.util;
 
 import java.lang.reflect.Field;
 import java.util.Comparator;

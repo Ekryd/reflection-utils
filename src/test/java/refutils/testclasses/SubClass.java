@@ -1,5 +1,7 @@
 package refutils.testclasses;
 
+import java.awt.*;
+
 /**
  * @author bjorn
  * @since 2013-10-01
@@ -12,6 +14,7 @@ public class SubClass extends SuperClass {
     private short aShort;
     private byte aByte;
     private char aChar;
+    private static final Color FINAL_FIELD = Color.BLACK;
 
     public SubClass() {
         super((byte) 0);
