@@ -4,7 +4,6 @@ install: mvn install -Ddev
 
 jdk:
   - openjdk6
-  - oraclejdk7
   - oraclejdk8
 
 after_success:
