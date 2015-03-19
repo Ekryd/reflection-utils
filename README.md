@@ -1,6 +1,8 @@
 # Reflection-utils ![Icon](https://raw.githubusercontent.com/Ekryd/reflection-utils/master/ReflectionUtils.png)
 
 [![Build Status](https://travis-ci.org/Ekryd/reflection-utils.svg?branch=master)](https://travis-ci.org/Ekryd/reflection-utils)
+[![Coverage Status](https://coveralls.io/repos/Ekryd/reflection-utils/badge.svg?branch=master)](https://coveralls.io/r/Ekryd/reflection-utils?branch=master)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.google.code.reflection-utils/reflection-utils/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.google.code.reflection-utils/reflection-utils)
 
 This library will make it easier to get and set internal fields in classes using java reflection. The library is optimized for convenience and not for speed, so it works best with unit tests.
 
