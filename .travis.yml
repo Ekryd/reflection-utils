@@ -7,7 +7,7 @@ env:
    - secure: "H++md51jq/ANOWItsany1pKllMuLrQCv0El1j2qNuwPPxxFh0JqyQ2TZruqD6JY6l1b9JMbgiesUsl04vu1p3UeQOofnJQCFE0Ym69qN43nZJMU7AvYNLTq7mhdEeHXxy1gC0wtSXKaI0nS+m0O4eKV0D1cyzX0+sSlrruy+ZsA="
 
 install: mvn install -Ddev
-
+ 
 jdk:
   - openjdk6
   - oraclejdk8
