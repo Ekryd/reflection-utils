@@ -24,6 +24,16 @@ public class FieldHelper {
     }
 
     /**
+     * Instantiates a FieldHelper.
+     *
+     * @param instance the instance where the fields are located
+     */
+    public FieldHelper(Class<?> fieldsBaseClass, Object instance) {
+        this.instance = instance;
+        this.allFields = new FieldExtractor(fieldsBaseClass).getAllFields();
+    }
+
+    /**
      * Get the value for the named field
      *
      * @param fieldName the name of the field
