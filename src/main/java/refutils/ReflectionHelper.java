@@ -112,6 +112,8 @@ public final class ReflectionHelper {
     public <T> T getField(Class<T> fieldClass) {
         try {
             FieldHelper fieldHelper = new FieldHelper(instance);
+            System.out.println(1);
+            System.out.println(2);
             return fieldHelper.getValue(fieldClass);
         } catch (IllegalAccessException ex) {
             throw new IllegalStateException("This should never happen, since the field is always made accessible");
