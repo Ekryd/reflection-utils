@@ -55,7 +55,7 @@ public class ReflectionHelperExceptionTest {
     }
 
     @Test
-    public void settingNonExistingFieldShouldThrowException() throws Exception {
+    public void settingNonExistingFieldShouldThrowException() {
         expectedException.expect(ReflectionHelperException.class);
         expectedException.expectMessage(is("java.lang.NoSuchFieldException: Cannot find visible field named gurka"));
 
@@ -65,7 +65,7 @@ public class ReflectionHelperExceptionTest {
     }
 
     @Test
-    public void settingNonExistingFieldShouldThrowException2() throws Exception {
+    public void settingNonExistingFieldShouldThrowException2() {
         expectedException.expect(ReflectionHelperException.class);
         expectedException.expectMessage(is("java.lang.NoSuchFieldException: Cannot find visible field for class java.awt.Insets"));
 
@@ -75,7 +75,7 @@ public class ReflectionHelperExceptionTest {
     }
 
     @Test
-    public void gettingNonExistingFieldShouldThrowException() throws Exception {
+    public void gettingNonExistingFieldShouldThrowException() {
         expectedException.expect(ReflectionHelperException.class);
         expectedException.expectMessage(is("java.lang.NoSuchFieldException: Cannot find visible field named gurka"));
 
@@ -85,7 +85,7 @@ public class ReflectionHelperExceptionTest {
     }
 
     @Test
-    public void gettingNonExistingFieldShouldThrowException2() throws Exception {
+    public void gettingNonExistingFieldShouldThrowException2() {
         expectedException.expect(ReflectionHelperException.class);
         expectedException.expectMessage(is("java.lang.NoSuchFieldException: Cannot find visible field for class java.awt.Insets"));
 
@@ -95,7 +95,7 @@ public class ReflectionHelperExceptionTest {
     }
 
     @Test
-    public void settingFinalStaticFieldShouldThrowException() throws Exception {
+    public void settingFinalStaticFieldShouldThrowException() {
         expectedException.expect(ReflectionHelperException.class);
         expectedException.expectMessage(is("java.lang.IllegalAccessException: Can not set static final java.awt.Color field refutils.testclasses.SubClass.FINAL_FIELD to java.awt.Color"));
 
@@ -105,7 +105,7 @@ public class ReflectionHelperExceptionTest {
     }
 
     @Test
-    public void settingFinalStaticFieldShouldThrowException2() throws Exception {
+    public void settingFinalStaticFieldShouldThrowException2() {
         expectedException.expect(ReflectionHelperException.class);
         expectedException.expectMessage(is("java.lang.IllegalAccessException: Can not set static final java.awt.Color field refutils.testclasses.SubClass.FINAL_FIELD to java.awt.Color"));
 

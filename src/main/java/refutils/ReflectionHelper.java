@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 public final class ReflectionHelper {
     /** The object that contains the field. */
     private final Object instance;
+    private final Class<?> fieldDefinitions;
 
     /**
      * Instantiates a new reflection helper with the instance where the reflection operations are performed.
@@ -19,11 +20,29 @@ public final class ReflectionHelper {
      * @param instance the instance
      */
     public ReflectionHelper(final Object instance) {
+        this(instance, instance == null ? null : instance.getClass());
+    }
+
+    /**
+     * Advanced instantiation of a new reflection helper where the reflection operations are performed on the instance, but the
+     * field definitions will be taken from a superclass.
+     * Example:
+     * SuperClass has a private field "name"
+     * SubClass inherits from SuperClass
+     * new ReflectionHelper(subClass).setField("name", value); does not work since the name field is not visible
+     * new ReflectionHelper(subClass, SuperClass.class).setField("name", value); works since SuperClass is scanned for fields
+     *
+     * @param instance   the instance to manipulate
+     * @param fieldDefinitions where the fields are defined
+     */
+    public ReflectionHelper(final Object instance, final Class<?> fieldDefinitions) {
         if (instance == null) {
             throw new NullPointerException("The instance in the ReflectionHelper cannot be null");
         }
         this.instance = instance;
+        this.fieldDefinitions = fieldDefinitions;
     }
+
 
     /**
      * Instantiate private empty constructor.
@@ -55,7 +74,7 @@ public final class ReflectionHelper {
      */
     public void setField(final Object fieldValue) {
         try {
-            FieldHelper fieldHelper = new FieldHelper(instance);
+            FieldHelper fieldHelper = new FieldHelper(instance, fieldDefinitions);
             fieldHelper.setValue(fieldValue);
         } catch (IllegalAccessException ex) {
             throw new ReflectionHelperException(ex);
@@ -73,7 +92,7 @@ public final class ReflectionHelper {
      */
     public void setField(final String fieldName, final Object fieldValue) {
         try {
-            FieldHelper fieldHelper = new FieldHelper(instance);
+            FieldHelper fieldHelper = new FieldHelper(instance, fieldDefinitions);
             fieldHelper.setValue(fieldName, fieldValue);
         } catch (IllegalAccessException ex) {
             throw new ReflectionHelperException(ex);
@@ -91,7 +110,7 @@ public final class ReflectionHelper {
      */
     public Object getField(String fieldName) {
         try {
-            FieldHelper fieldHelper = new FieldHelper(instance);
+            FieldHelper fieldHelper = new FieldHelper(instance, fieldDefinitions);
             return fieldHelper.getValue(fieldName);
         } catch (IllegalAccessException ex) {
             throw new IllegalStateException("This should never happen, since the field is always made accessible", ex);
@@ -111,7 +130,7 @@ public final class ReflectionHelper {
      */
     public <T> T getField(Class<T> fieldClass) {
         try {
-            FieldHelper fieldHelper = new FieldHelper(instance);
+            FieldHelper fieldHelper = new FieldHelper(instance, fieldDefinitions);
             return fieldHelper.getValue(fieldClass);
         } catch (IllegalAccessException ex) {
             throw new IllegalStateException("This should never happen, since the field is always made accessible", ex);

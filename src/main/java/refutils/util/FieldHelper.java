@@ -14,30 +14,20 @@ public class FieldHelper {
     private final Collection<Field> allFields;
 
     /**
-     * Instantiates a FieldHelper.
+     * Instantiates a FieldHelper. By specifying a superclass, the FieldHelper can be used to reach hidden private
+     * variables in the super class
      *
-     * @param instance the instance where the fields are located
+     * @param instance             the instance that should be manipulated
+     * @param classContainingField the super class of the instance where the fields are defined
      */
-    public FieldHelper(Object instance) {
-        this.instance = instance;
-        this.allFields = new FieldExtractor(instance.getClass()).getAllFields();
-    }
-
-    /**
-     * This constructor can be used to reach private variables in super classes by specifying which class the fields
-     * should be take from
-     *
-     * @param instance                  the instance that should be manipulated
-     * @param superClassContainingField the super class of the instance where the fields are defined
-     */
-    public FieldHelper(Object instance, Class<?> superClassContainingField) {
-        if (!superClassContainingField.isInstance(instance)) {
+    public FieldHelper(Object instance, Class<?> classContainingField) {
+        if (!classContainingField.isInstance(instance)) {
             throw new IllegalArgumentException(String.format("Instance of %s is not a subclass of %s",
                     instance.getClass().getSimpleName(),
-                    superClassContainingField.getSimpleName()));
+                    classContainingField.getSimpleName()));
         }
         this.instance = instance;
-        this.allFields = new FieldExtractor(superClassContainingField).getAllFields();
+        this.allFields = new FieldExtractor(classContainingField).getAllFields();
     }
 
     /**

@@ -24,7 +24,7 @@ public class FieldHelperTest {
         expectedException.expect(NoSuchFieldException.class);
         expectedException.expectMessage(is("Cannot find visible field for class java.io.FileNotFoundException"));
 
-        new FieldHelper(new SubClass()).getValue(FileNotFoundException.class);
+        new FieldHelper(new SubClass(), SubClass.class).getValue(FileNotFoundException.class);
     }
 
     @Test
@@ -32,13 +32,13 @@ public class FieldHelperTest {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage(is("Cannot match Object.class type parameter, you must specify it by name"));
 
-        new FieldHelper(new SubClass()).setValue(new Object());
+        new FieldHelper(new SubClass(), SubClass.class).setValue(new Object());
     }
 
     @Test
     public void objectInstanceShouldBeSetWithNameReference() throws Exception {
         SubClass instance = new SubClass();
-        FieldHelper fieldHelper = new FieldHelper(instance);
+        FieldHelper fieldHelper = new FieldHelper(instance, SubClass.class);
 
         fieldHelper.setValue("anObject", new Object());
 
@@ -52,7 +52,7 @@ public class FieldHelperTest {
                 "Found too many (2) matches for field class java.lang.Float [aFloat, aFloat2], " +
                 "specify the field by name instead"));
 
-        new FieldHelper(new SubClass()).getValue(Float.class);
+        new FieldHelper(new SubClass(), SubClass.class).getValue(Float.class);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class FieldHelperTest {
         expectedException.expect(NoSuchFieldException.class);
         expectedException.expectMessage(is("Cannot find visible field for class java.lang.StringBuffer"));
 
-        new FieldHelper(new SubClass()).setValue(new StringBuffer());
+        new FieldHelper(new SubClass(), SubClass.class).setValue(new StringBuffer());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class FieldHelperTest {
         expectedException.expect(NoSuchFieldException.class);
         expectedException.expectMessage(is("Cannot find visible field named gurka"));
 
-        new FieldHelper(new SubClass()).setValue("gurka", "");
+        new FieldHelper(new SubClass(), SubClass.class).setValue("gurka", "");
     }
 
     @Test
@@ -76,14 +76,14 @@ public class FieldHelperTest {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage(is("Can not set java.lang.Runnable field refutils.testclasses.SubClass.override to java.lang.Integer"));
 
-        FieldHelper fieldHelper = new FieldHelper(new SubClass());
+        FieldHelper fieldHelper = new FieldHelper(new SubClass(), SubClass.class);
         fieldHelper.setValue("override", 43);
     }
 
     @Test
     public void settingNamedFieldWithSubClassShouldWork() throws Exception {
         FieldClass instance = new FieldClass();
-        FieldHelper fieldHelper = new FieldHelper(instance);
+        FieldHelper fieldHelper = new FieldHelper(instance, FieldClass.class);
 
         fieldHelper.setValue("superClass", new SubClass());
 
@@ -97,7 +97,7 @@ public class FieldHelperTest {
                 "Found too many (3) matches for field class refutils.testclasses.SubClass [anInterface, subClass, superClass], " +
                         "specify the field by name instead"));
 
-        new FieldHelper(new FieldClass()).getValue(SubClass.class);
+        new FieldHelper(new FieldClass(), FieldClass.class).getValue(SubClass.class);
     }
 
     @Test
@@ -107,13 +107,13 @@ public class FieldHelperTest {
                 "Found too many (2) matches for field class refutils.testclasses.SuperClass [anInterface, superClass], " +
                         "specify the field by name instead"));
 
-        new FieldHelper(new FieldClass()).getValue(SuperClass.class);
+        new FieldHelper(new FieldClass(), FieldClass.class).getValue(SuperClass.class);
     }
 
     @Test
     public void settingInterfaceFieldShouldWork() throws Exception {
         FieldClass instance = new FieldClass();
-        FieldHelper fieldHelper = new FieldHelper(instance);
+        FieldHelper fieldHelper = new FieldHelper(instance, FieldClass.class);
 
         fieldHelper.setValue(new Interface() {
             @Override
@@ -137,11 +137,11 @@ public class FieldHelperTest {
 
     private void testPrimitive(Object testValue) throws NoSuchFieldException, IllegalAccessException {
         SubClass instance = new SubClass();
-        FieldHelper fieldHelper = new FieldHelper(instance);
+        FieldHelper fieldHelper = new FieldHelper(instance, SubClass.class);
 
         fieldHelper.setValue(testValue);
 
-        fieldHelper = new FieldHelper(instance);
+        fieldHelper = new FieldHelper(instance, SubClass.class);
 
         assertThat(fieldHelper.getValue(testValue.getClass()), is(testValue));
     }
@@ -149,7 +149,7 @@ public class FieldHelperTest {
     @Test
     public void settingStaticProtectedInheritedFieldShouldWork() throws Exception {
         SubClass instance = new SubClass();
-        FieldHelper fieldHelper = new FieldHelper(instance);
+        FieldHelper fieldHelper = new FieldHelper(instance, SubClass.class);
         File fieldValue = new File("gurka.txt");
 
         fieldHelper.setValue(fieldValue);
