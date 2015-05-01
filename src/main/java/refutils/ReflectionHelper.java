@@ -29,7 +29,7 @@ public final class ReflectionHelper {
      * Example:
      * SuperClass has a private field "name"
      * SubClass inherits from SuperClass
-     * new ReflectionHelper(subClass).setField("name", value); does not work since the name field is not visible
+     * new ReflectionHelper(subClass).setField("name", value); does not work since the "name" field is not visible
      * new ReflectionHelper(subClass, SuperClass.class).setField("name", value); works since SuperClass is scanned for fields
      *
      * @param instance   the instance to manipulate
