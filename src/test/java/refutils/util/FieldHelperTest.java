@@ -3,10 +3,7 @@ package refutils.util;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import refutils.testclasses.FieldClass;
-import refutils.testclasses.Interface;
-import refutils.testclasses.SubClass;
-import refutils.testclasses.SuperClass;
+import refutils.testclasses.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -159,5 +156,73 @@ public class FieldHelperTest {
 
         assertThat(fieldHelper.getValue(fieldValue.getClass()).toString(), is("gurka.txt"));
     }
+    
+    @Test
+    public void privateFieldsInSuperClassShouldBeReachable() throws Exception {
+        SubClass instance = new SubClass();
+        
+        FieldHelper fieldHelper = new FieldHelper(instance, SuperClass.class);
+        fieldHelper.getValue("fnfex");
+    }
 
+    @Test
+    public void privateFieldsInSuperClassShouldBeModifiable() throws Exception {
+        SubClass instance = new SubClass();
+        FileNotFoundException ex = new FileNotFoundException("Gurka");
+        
+        FieldHelper fieldHelper = new FieldHelper(instance, SuperClass.class);
+        fieldHelper.setValue(ex);
+        
+        assertThat(getExceptionMessage(ex), is("Gurka"));
+        assertThat(getExceptionMessage(instance.getFnfex()), is("Gurka"));
+        assertThat(getExceptionMessage(fieldHelper.getValue("fnfex")), is("Gurka"));
+        assertThat(getExceptionMessage(fieldHelper.getValue(FileNotFoundException.class)), is("Gurka"));
+
+        ex = new FileNotFoundException("Tomat");
+        fieldHelper.setValue("fnfex", ex);
+
+        assertThat(getExceptionMessage(instance.getFnfex()), is("Tomat"));
+    }
+    
+    private String getExceptionMessage(Object ex) {
+        return ((Exception) ex).getMessage();
+    }
+
+    @Test
+    public void checkThatSubclassIsCorrect() throws Exception {
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("Instance of SubClass is not a subclass of SneakyConstructor");
+        
+        SubClass instance = new SubClass();
+        new FieldHelper(instance, SneakyConstructor.class);
+    }
+
+    @Test
+    public void checkThatSubclassIsCorrect2() throws Exception {
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("Instance of SubClass is not a subclass of String");
+        
+        SubClass instance = new SubClass();
+        new FieldHelper(instance, String.class);
+    }
+
+    @Test
+    public void checkThatSubclassIsCorrect3() throws Exception {
+        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("Instance of SuperClass is not a subclass of SubClass");
+        
+        SuperClass instance = new SuperClass((byte) 0);
+        new FieldHelper(instance, SubClass.class);
+    }
+
+    @Test
+    public void specifyingClassShouldBeOkButUnnecessary() throws Exception {
+        SubClass instance = new SubClass();
+        FieldHelper fieldHelper = new FieldHelper(instance, SubClass.class);
+
+        fieldHelper.setValue("anObject", new Object());
+
+        assertThat(fieldHelper.getValue("anObject"), not(nullValue()));
+    }
+    
 }

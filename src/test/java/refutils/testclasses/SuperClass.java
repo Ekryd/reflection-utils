@@ -58,5 +58,8 @@ public class SuperClass implements Interface {
         return override;
     }
 
+    public FileNotFoundException getFnfex() {
+        return fnfex;
+    }
 
 }

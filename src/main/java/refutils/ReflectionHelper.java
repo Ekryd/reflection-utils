@@ -38,7 +38,7 @@ public final class ReflectionHelper {
         } catch (NoSuchMethodException ex) {
             throw ReflectionHelperException.createCannotInstantiateClass(clazz, ex);
         } catch (IllegalAccessException ex) {
-            throw new IllegalStateException("This should never happen, since the constructor is always made accessible");
+            throw new IllegalStateException("This should never happen, since the constructor is always made accessible", ex);
         } catch (InvocationTargetException ex) {
             throw ReflectionHelperException.createCannotInstantiateClass(clazz, ex);
         } catch (InstantiationException ex) {
@@ -94,7 +94,7 @@ public final class ReflectionHelper {
             FieldHelper fieldHelper = new FieldHelper(instance);
             return fieldHelper.getValue(fieldName);
         } catch (IllegalAccessException ex) {
-            throw new IllegalStateException("This should never happen, since the field is always made accessible");
+            throw new IllegalStateException("This should never happen, since the field is always made accessible", ex);
         } catch (NoSuchFieldException ex) {
             throw new ReflectionHelperException(ex);
         }
@@ -114,7 +114,7 @@ public final class ReflectionHelper {
             FieldHelper fieldHelper = new FieldHelper(instance);
             return fieldHelper.getValue(fieldClass);
         } catch (IllegalAccessException ex) {
-            throw new IllegalStateException("This should never happen, since the field is always made accessible");
+            throw new IllegalStateException("This should never happen, since the field is always made accessible", ex);
         } catch (NoSuchFieldException ex) {
             throw new ReflectionHelperException(ex);
         }

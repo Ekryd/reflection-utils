@@ -24,6 +24,23 @@ public class FieldHelper {
     }
 
     /**
+     * This constructor can be used to reach private variables in super classes by specifying which class the fields
+     * should be take from
+     *
+     * @param instance                  the instance that should be manipulated
+     * @param superClassContainingField the super class of the instance where the fields are defined
+     */
+    public FieldHelper(Object instance, Class<?> superClassContainingField) {
+        if (!superClassContainingField.isInstance(instance)) {
+            throw new IllegalArgumentException(String.format("Instance of %s is not a subclass of %s",
+                    instance.getClass().getSimpleName(),
+                    superClassContainingField.getSimpleName()));
+        }
+        this.instance = instance;
+        this.allFields = new FieldExtractor(superClassContainingField).getAllFields();
+    }
+
+    /**
      * Get the value for the named field
      *
      * @param fieldName the name of the field
@@ -119,7 +136,7 @@ public class FieldHelper {
         Collection<Field> matchingFields = allFields;
 
         matchingFields = filterOnTypeMatches(matchingFields, valueClass);
-        if (matchingFields.size() == 0) {
+        if (matchingFields.isEmpty()) {
             throw new NoSuchFieldException(String.format("Cannot find visible field for %s", valueClass));
         }
         if (matchingFields.size() > 1) {
