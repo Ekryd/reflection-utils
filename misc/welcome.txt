@@ -1,0 +1,11 @@
+
+
+  ******************************************************************************
+  *  Use the following build options when building the Reflection utils:       *
+  *                                                                            *
+  *  mvn clean install           (to build)                                    *
+  *                                                                            *
+  *  mvn release:clean           (to deploy)                                   *
+  *  mvn release:prepare                                                       *
+  *  mvn release:perform                                                       *
+  ******************************************************************************

@@ -1,4 +1,4 @@
-# Reflection-utils ![Icon](https://raw.githubusercontent.com/Ekryd/reflection-utils/master/ReflectionUtils.png)
+# Reflection-utils ![Icon](https://raw.githubusercontent.com/Ekryd/reflection-utils/master/misc/ReflectionUtils.png)
 
 [![Build Status](https://travis-ci.org/Ekryd/reflection-utils.svg?branch=master)](https://travis-ci.org/Ekryd/reflection-utils)
 [![Coverage Status](https://coveralls.io/repos/Ekryd/reflection-utils/badge.svg?branch=master)](https://coveralls.io/r/Ekryd/reflection-utils?branch=master)
