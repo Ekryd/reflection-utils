@@ -15,6 +15,7 @@ public class SubClass extends SuperClass {
     private byte aByte;
     private char aChar;
     private static final Color FINAL_FIELD = Color.BLACK;
+    private final Label label = new Label("What!");
 
     public SubClass() {
         super((byte) 0);

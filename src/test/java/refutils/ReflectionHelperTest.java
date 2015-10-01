@@ -4,6 +4,7 @@ import org.junit.Test;
 import refutils.testclasses.SubClass;
 import refutils.testclasses.SuperClass;
 
+import java.awt.*;
 import java.io.FileNotFoundException;
 
 import static junit.framework.Assert.assertNotNull;
@@ -71,4 +72,51 @@ public class ReflectionHelperTest {
         assertThat(field.getMessage(), is("Gurka"));
     }
 
+    @Test
+    public void settingFinalNonStaticFieldShouldWork() {
+        SubClass instance = new SubClass();
+
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
+        reflectionHelper.setField("label", new Label("Do it"));
+        ReflectionHelper reflectionHelper2 = new ReflectionHelper(instance);
+        Label actual = (Label) reflectionHelper2.getField("label");
+        
+        assertThat(actual.getText(), is("Do it"));
+    }
+
+    @Test
+    public void settingFinalNonStaticFieldShouldWork2() {
+        SubClass instance = new SubClass();
+
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
+        reflectionHelper.setField(new Label("Do it"));
+        ReflectionHelper reflectionHelper2 = new ReflectionHelper(instance);
+        Label actual = reflectionHelper2.getField(Label.class);
+        
+        assertThat(actual.getText(), is("Do it"));
+    }
+
+    @Test
+    public void settingFinalStaticFieldShouldThrowException() {
+        SubClass instance = new SubClass();
+
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
+        reflectionHelper.setField("FINAL_FIELD", Color.BLUE);
+        ReflectionHelper reflectionHelper2 = new ReflectionHelper(instance);
+        Color actual = (Color) reflectionHelper2.getField("FINAL_FIELD");
+        
+        assertThat(actual, is(Color.BLUE));
+    }
+
+    @Test
+    public void settingFinalStaticFieldShouldThrowException2() {
+        SubClass instance = new SubClass();
+
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
+        reflectionHelper.setField(Color.BLUE);
+        ReflectionHelper reflectionHelper2 = new ReflectionHelper(instance);
+        Color actual = reflectionHelper2.getField(Color.class);
+        
+        assertThat(actual, is(Color.BLUE));
+    }
 }

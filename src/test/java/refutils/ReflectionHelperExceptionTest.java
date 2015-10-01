@@ -93,24 +93,5 @@ public class ReflectionHelperExceptionTest {
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
         reflectionHelper.getField(Insets.class);
     }
-
-    @Test
-    public void settingFinalStaticFieldShouldThrowException() {
-        expectedException.expect(ReflectionHelperException.class);
-        expectedException.expectMessage(is("java.lang.IllegalAccessException: Can not set static final java.awt.Color field refutils.testclasses.SubClass.FINAL_FIELD to java.awt.Color"));
-
-        SubClass instance = new SubClass();
-        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        reflectionHelper.setField("FINAL_FIELD", Color.BLUE);
-    }
-
-    @Test
-    public void settingFinalStaticFieldShouldThrowException2() {
-        expectedException.expect(ReflectionHelperException.class);
-        expectedException.expectMessage(is("java.lang.IllegalAccessException: Can not set static final java.awt.Color field refutils.testclasses.SubClass.FINAL_FIELD to java.awt.Color"));
-
-        SubClass instance = new SubClass();
-        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        reflectionHelper.setField(Color.BLUE);
-    }
+    
 }
