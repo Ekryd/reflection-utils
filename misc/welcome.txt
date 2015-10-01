@@ -8,4 +8,7 @@
   *  mvn release:clean           (to deploy)                                   *
   *  mvn release:prepare                                                       *
   *  mvn release:perform                                                       *
+  *                                                                            *
+  *  mvn versions:display-dependency-updates                                   *
+  *  mvn versions:display-plugin-updates                                       *
   ******************************************************************************
