@@ -1,6 +1,7 @@
 package refutils.testclasses;
 
-import java.awt.*;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author bjorn
@@ -14,8 +15,8 @@ public class SubClass extends SuperClass {
     private short aShort;
     private byte aByte;
     private char aChar;
-    private static final Color FINAL_FIELD = Color.BLACK;
-    private final Label label = new Label("What!");
+    private static final TimeUnit FINAL_FIELD = TimeUnit.DAYS;
+    private final Thread.State state = Thread.State.NEW;
 
     public SubClass() {
         super((byte) 0);

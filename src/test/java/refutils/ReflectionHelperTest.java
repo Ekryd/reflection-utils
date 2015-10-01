@@ -4,8 +4,8 @@ import org.junit.Test;
 import refutils.testclasses.SubClass;
 import refutils.testclasses.SuperClass;
 
-import java.awt.*;
 import java.io.FileNotFoundException;
+import java.util.concurrent.TimeUnit;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.Matchers.is;
@@ -77,11 +77,11 @@ public class ReflectionHelperTest {
         SubClass instance = new SubClass();
 
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        reflectionHelper.setField("label", new Label("Do it"));
+        reflectionHelper.setField("state", Thread.State.TIMED_WAITING);
         ReflectionHelper reflectionHelper2 = new ReflectionHelper(instance);
-        Label actual = (Label) reflectionHelper2.getField("label");
+        Thread.State actual = (Thread.State) reflectionHelper2.getField("state");
         
-        assertThat(actual.getText(), is("Do it"));
+        assertThat(actual, is(Thread.State.TIMED_WAITING));
     }
 
     @Test
@@ -89,11 +89,11 @@ public class ReflectionHelperTest {
         SubClass instance = new SubClass();
 
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        reflectionHelper.setField(new Label("Do it"));
+        reflectionHelper.setField(Thread.State.TIMED_WAITING);
         ReflectionHelper reflectionHelper2 = new ReflectionHelper(instance);
-        Label actual = reflectionHelper2.getField(Label.class);
+        Thread.State actual = reflectionHelper2.getField(Thread.State.class);
         
-        assertThat(actual.getText(), is("Do it"));
+        assertThat(actual, is(Thread.State.TIMED_WAITING));
     }
 
     @Test
@@ -101,11 +101,11 @@ public class ReflectionHelperTest {
         SubClass instance = new SubClass();
 
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        reflectionHelper.setField("FINAL_FIELD", Color.BLUE);
+        reflectionHelper.setField("FINAL_FIELD", TimeUnit.MINUTES);
         ReflectionHelper reflectionHelper2 = new ReflectionHelper(instance);
-        Color actual = (Color) reflectionHelper2.getField("FINAL_FIELD");
+        TimeUnit actual = (TimeUnit) reflectionHelper2.getField("FINAL_FIELD");
         
-        assertThat(actual, is(Color.BLUE));
+        assertThat(actual, is(TimeUnit.MINUTES));
     }
 
     @Test
@@ -113,10 +113,10 @@ public class ReflectionHelperTest {
         SubClass instance = new SubClass();
 
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        reflectionHelper.setField(Color.BLUE);
+        reflectionHelper.setField(TimeUnit.MINUTES);
         ReflectionHelper reflectionHelper2 = new ReflectionHelper(instance);
-        Color actual = reflectionHelper2.getField(Color.class);
+        TimeUnit actual = reflectionHelper2.getField(TimeUnit.class);
         
-        assertThat(actual, is(Color.BLUE));
+        assertThat(actual, is(TimeUnit.MINUTES));
     }
 }

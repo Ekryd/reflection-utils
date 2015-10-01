@@ -5,7 +5,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import refutils.testclasses.*;
 
-import java.awt.*;
+
+import java.util.Calendar;
 
 import static org.hamcrest.Matchers.is;
 
@@ -67,11 +68,11 @@ public class ReflectionHelperExceptionTest {
     @Test
     public void settingNonExistingFieldShouldThrowException2() {
         expectedException.expect(ReflectionHelperException.class);
-        expectedException.expectMessage(is("java.lang.NoSuchFieldException: Cannot find visible field for class java.awt.Insets"));
+        expectedException.expectMessage(is("java.lang.NoSuchFieldException: Cannot find visible field for class java.util.GregorianCalendar"));
 
         SubClass instance = new SubClass();
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        reflectionHelper.setField(new Insets(0, 0, 0, 0));
+        reflectionHelper.setField(Calendar.getInstance());
     }
 
     @Test
@@ -87,11 +88,11 @@ public class ReflectionHelperExceptionTest {
     @Test
     public void gettingNonExistingFieldShouldThrowException2() {
         expectedException.expect(ReflectionHelperException.class);
-        expectedException.expectMessage(is("java.lang.NoSuchFieldException: Cannot find visible field for class java.awt.Insets"));
+        expectedException.expectMessage(is("java.lang.NoSuchFieldException: Cannot find visible field for class java.util.Calendar"));
 
         SubClass instance = new SubClass();
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        reflectionHelper.getField(Insets.class);
+        reflectionHelper.getField(Calendar.class);
     }
     
 }
