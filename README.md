@@ -9,7 +9,7 @@ This library will make it easier to get and set internal fields in classes using
 
 Mocking is great! Sometimes the easiest way to insert mocks are by Java reflection. Especially if you cannot use constructor arguments or setter methods.
 
-## Example ##
+## Example of how to use the ReflectionHelper in a test ##
 ```
     @Test
     public void storeMethodShouldSaveEntity() throws Exception {
@@ -17,7 +17,7 @@ Mocking is great! Sometimes the easiest way to insert mocks are by Java reflecti
         EntityHandler handler = new EntityHandlerImpl();        
         StoreDao storeDao = mock(StoreDao.class);
         
-        // Insert mock into handler
+        // *** This is the ReflectionHelper! You don't need to know the name of field nor the type, just set the instance ***
         new ReflectionHelper(handler).setField(storeDao);
         
         // Perform method
