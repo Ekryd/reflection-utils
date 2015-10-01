@@ -76,7 +76,8 @@
         <version>2.5.1</version>
         <configuration>
           <autoVersionSubmodules>true</autoVersionSubmodules>
-          <useReleaseProfile>true</useReleaseProfile>
+          <useReleaseProfile>false</useReleaseProfile>
+          <arguments>-Pdistribution</arguments>
           <goals>deploy</goals>
         </configuration>
       </plugin>
@@ -241,11 +242,6 @@
   <profiles>
     <profile>
       <id>distribution</id>
-      <activation>
-        <property>
-          <name>performRelease</name>
-        </property>
-      </activation>
       <build>
         <plugins>
           <plugin>
