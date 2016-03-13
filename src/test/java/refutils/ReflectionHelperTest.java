@@ -3,6 +3,7 @@ package refutils;
 import org.junit.Test;
 import refutils.testclasses.SubClass;
 import refutils.testclasses.SuperClass;
+import refutils.testclasses.SuperSuperClass;
 
 import java.io.FileNotFoundException;
 import java.util.concurrent.TimeUnit;
@@ -58,12 +59,13 @@ public class ReflectionHelperTest {
         SubClass instance = new SubClass();
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
         reflectionHelper.setField("intPackage", 34);
-        
+
         assertThat(instance.getIntPackage(), is(34));
 
         assertGetFieldWithBothTypedAndNamed(reflectionHelper, "intPackage", Integer.class, 34);
     }
 
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @Test
     public void privateFieldsInSuperClassShouldBeReachable() {
         SubClass instance = new SubClass();
@@ -80,16 +82,48 @@ public class ReflectionHelperTest {
 
     @Test
     public void privateNamedFieldsInSuperClassShouldBeReachable() {
+        //When using named fields, traverse the superclasses
         SubClass instance = new SubClass();
 
         FileNotFoundException fileNotFoundException = new FileNotFoundException("Gurka");
-        new ReflectionHelper(instance, SuperClass.class).setField("fnfex", fileNotFoundException);
+        new ReflectionHelper(instance).setField("fnfex", fileNotFoundException);
 
-        ReflectionHelper reflectionHelper = new ReflectionHelper(instance, SuperClass.class);
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
         FileNotFoundException field = (FileNotFoundException) reflectionHelper.getField("fnfex");
         assertThat(field.getMessage(), is("Gurka"));
 
-        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "fnfex", FileNotFoundException.class, fileNotFoundException);
+        assertGetFieldWithBothTypedAndNamed(new ReflectionHelper(instance, SuperClass.class), "fnfex", FileNotFoundException.class, fileNotFoundException);
+    }
+
+    @Test
+    public void privateNamedFieldsInSuperSuperClassShouldBeReachable() {
+        //When using named fields, traverse the superclasses
+        SubClass instance = new SubClass();
+
+        new ReflectionHelper(instance).setField("superSneakyField", "Find me!");
+
+        assertThat(new ReflectionHelper(instance).getField("superSneakyField").toString(), is("Find me!"));
+        assertThat(instance.getSuperSneakyField(), is("Find me!"));
+
+        assertGetFieldWithBothTypedAndNamed(new ReflectionHelper(instance, SuperSuperClass.class), "superSneakyField", String.class, "Find me!");
+    }
+
+    @Test
+    public void getAndSetFieldOnDifferentClassesShouldWork() {
+        //When using named fields, traverse the superclasses
+        SubClass instance = new SubClass();
+
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
+        reflectionHelper.setField("superSneakyField", "Find me!");
+        reflectionHelper.setField("stringPrivate2", "a String");
+        reflectionHelper.setField("stringPrivate", "another String");
+
+        reflectionHelper = new ReflectionHelper(instance);
+        assertThat((String) reflectionHelper.getField("superSneakyField"), is("Find me!"));
+        assertThat((String) reflectionHelper.getField("stringPrivate"), is("another String"));
+        assertThat((String) reflectionHelper.getField("stringPrivate2"), is("a String"));
+        assertThat((String) reflectionHelper.getField("stringPrivate"), is("another String"));
+        assertThat((String) reflectionHelper.getField("superSneakyField"), is("Find me!"));
     }
 
     @Test
@@ -127,7 +161,7 @@ public class ReflectionHelperTest {
         SubClass instance = new SubClass();
 
         new ReflectionHelper(instance).setField(TimeUnit.MINUTES);
-        
+
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
         assertGetFieldWithBothTypedAndNamed(reflectionHelper, "FINAL_FIELD", TimeUnit.class, TimeUnit.MINUTES);
     }

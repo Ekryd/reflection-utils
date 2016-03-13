@@ -24,13 +24,13 @@ public final class ReflectionHelper {
     }
 
     /**
-     * Advanced instantiation of a new reflection helper where the reflection operations are performed on the instance, but the
+     * Advanced instantiation of a new reflection helper where the <strong>ClassType</Strong> reflection operations are performed on the instance, but the
      * field definitions will be taken from a superclass.
      * Example:
-     * SuperClass has a private field "name"
+     * SuperClass has a private field String name
      * SubClass inherits from SuperClass
-     * new ReflectionHelper(subClass).setField("name", value); does not work since the "name" field is not visible
-     * new ReflectionHelper(subClass, SuperClass.class).setField("name", value); works since SuperClass is scanned for fields
+     * new ReflectionHelper(subClass).setField("value"); does not work since the "name" field is not visible in SubClass
+     * new ReflectionHelper(subClass, SuperClass.class).setField("value"); works since SuperClass is scanned for fields
      *
      * @param instance   the instance to manipulate
      * @param fieldDefinitions where the fields are defined
@@ -75,7 +75,7 @@ public final class ReflectionHelper {
     public void setField(final Object fieldValue) {
         try {
             FieldHelper fieldHelper = new FieldHelper(instance, fieldDefinitions);
-            fieldHelper.setValue(fieldValue);
+            fieldHelper.setValueByValue(fieldValue);
         } catch (IllegalAccessException ex) {
             throw new ReflectionHelperException(ex);
         } catch (NoSuchFieldException ex) {
@@ -85,7 +85,7 @@ public final class ReflectionHelper {
 
     /**
      * Sets a value for a field in the instance object. This method can be used if a class
-     * has more than one field of the specified type.
+     * has more than one field of the specified type or if the field is private and inherited.
      *
      * @param fieldName  The name of the field
      * @param fieldValue The value that the field should be set to.
@@ -93,7 +93,7 @@ public final class ReflectionHelper {
     public void setField(final String fieldName, final Object fieldValue) {
         try {
             FieldHelper fieldHelper = new FieldHelper(instance, fieldDefinitions);
-            fieldHelper.setValue(fieldName, fieldValue);
+            fieldHelper.setValueByName(fieldName, fieldValue);
         } catch (IllegalAccessException ex) {
             throw new ReflectionHelperException(ex);
         } catch (NoSuchFieldException ex) {
@@ -103,7 +103,8 @@ public final class ReflectionHelper {
 
     /**
      * Gets the value of a field in the instance object. This method can be used if a class
-     * has more than one field of the specified type. The returned value must be casted to the field class.
+     * has more than one field of the specified type or if the field is private and inherited.
+     * The returned value must be cast to the field class.
      *
      * @param fieldName The name of the field
      * @return the value of the field
@@ -111,7 +112,7 @@ public final class ReflectionHelper {
     public Object getField(String fieldName) {
         try {
             FieldHelper fieldHelper = new FieldHelper(instance, fieldDefinitions);
-            return fieldHelper.getValue(fieldName);
+            return fieldHelper.getValueByName(fieldName);
         } catch (IllegalAccessException ex) {
             throw new IllegalStateException("This should never happen, since the field is always made accessible", ex);
         } catch (NoSuchFieldException ex) {
@@ -131,7 +132,7 @@ public final class ReflectionHelper {
     public <T> T getField(Class<T> fieldClass) {
         try {
             FieldHelper fieldHelper = new FieldHelper(instance, fieldDefinitions);
-            return fieldHelper.getValue(fieldClass);
+            return fieldHelper.getValueByType(fieldClass);
         } catch (IllegalAccessException ex) {
             throw new IllegalStateException("This should never happen, since the field is always made accessible", ex);
         } catch (NoSuchFieldException ex) {

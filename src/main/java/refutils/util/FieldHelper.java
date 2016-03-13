@@ -12,6 +12,7 @@ import java.util.List;
 public class FieldHelper {
     private final Object instance;
     private final Collection<Field> allFields;
+    private final Class<?> classContainingField;
 
     /**
      * Instantiates a FieldHelper. By specifying a superclass, the FieldHelper can be used to reach hidden private
@@ -28,6 +29,7 @@ public class FieldHelper {
         }
         this.instance = instance;
         this.allFields = new FieldExtractor(classContainingField).getAllFields();
+        this.classContainingField = classContainingField;
     }
 
     /**
@@ -38,8 +40,8 @@ public class FieldHelper {
      * @throws IllegalAccessException if the underlying field is inaccessible.
      * @throws NoSuchFieldException   thrown if field cannot be located
      */
-    public Object getValue(String fieldName) throws IllegalAccessException, NoSuchFieldException {
-        Field field = getFieldByName(fieldName);
+    public Object getValueByName(String fieldName) throws IllegalAccessException, NoSuchFieldException {
+        Field field = getFieldByName(fieldName, classContainingField, allFields);
         MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
 
         Object returnValue = field.get(instance);
@@ -52,14 +54,14 @@ public class FieldHelper {
     /**
      * Get the value for the matching field by looking at class type.
      *
-     * @param valueClass the class type of field
      * @param <T>        the type of the field
+     * @param valueClass the class type of field
      * @return the field value
      * @throws IllegalAccessException This should never happen, since the field is always made accessible.
      * @throws NoSuchFieldException   thrown if field cannot be located
      */
     @SuppressWarnings("unchecked")
-    public <T> T getValue(Class<T> valueClass) throws IllegalAccessException, NoSuchFieldException {
+    public <T> T getValueByType(Class<T> valueClass) throws IllegalAccessException, NoSuchFieldException {
         checkForObjectValueClass(valueClass);
 
         Field field = getFieldByType(valueClass);
@@ -80,8 +82,8 @@ public class FieldHelper {
      * @throws IllegalAccessException This should never happen, since the field is always made accessible.
      * @throws NoSuchFieldException   thrown if field cannot be located
      */
-    public void setValue(String fieldName, Object value) throws IllegalAccessException, NoSuchFieldException {
-        Field field = getFieldByName(fieldName);
+    public void setValueByName(String fieldName, Object value) throws IllegalAccessException, NoSuchFieldException {
+        Field field = getFieldByName(fieldName, classContainingField, allFields);
         MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
 
         field.set(instance, value);
@@ -96,7 +98,7 @@ public class FieldHelper {
      * @throws IllegalAccessException if the underlying field is inaccessible.
      * @throws NoSuchFieldException   thrown if field cannot be located
      */
-    public void setValue(Object value) throws IllegalAccessException, NoSuchFieldException {
+    public void setValueByValue(Object value) throws IllegalAccessException, NoSuchFieldException {
         checkForObjectValueClass(value.getClass());
 
         Field field = getFieldByType(value.getClass());
@@ -107,13 +109,17 @@ public class FieldHelper {
         makeFieldAccessible.restoreAccessState();
     }
 
-    private Field getFieldByName(String fieldName) throws NoSuchFieldException {
-        for (Field potentialField : allFields) {
+    private Field getFieldByName(String fieldName, Class<?> classContainingField, Collection<Field> classFields) throws NoSuchFieldException {
+        for (Field potentialField : classFields) {
             if (potentialField.getName().equals(fieldName)) {
                 return potentialField;
             }
         }
-        throw new NoSuchFieldException(String.format("Cannot find visible field named %s", fieldName));
+        Class<?> superclass = classContainingField.getSuperclass();
+        if (superclass == null) {
+            throw new NoSuchFieldException(String.format("Cannot find visible field named %s", fieldName));
+        }
+        return getFieldByName(fieldName, superclass, new FieldExtractor(superclass).getAllFields());
     }
 
     private void checkForObjectValueClass(Class valueClass) {

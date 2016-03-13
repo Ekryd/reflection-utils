@@ -4,11 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 /**
- * @author bjorn
- * @since 2013-10-01
+ * TestClass
  */
 @SuppressWarnings("UnusedDeclaration")
-public class SuperClass implements Interface {
+public class SuperClass extends SuperSuperClass implements Interface {
     private long longPrivate;
     private final byte bytePrivateFinal;
     int intPackage;

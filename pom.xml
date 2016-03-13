@@ -223,8 +223,8 @@
   <scm>
     <connection>scm:git:https://github.com/Ekryd/reflection-utils.git</connection>
     <developerConnection>scm:git:https://github.com/Ekryd/reflection-utils.git</developerConnection>
-    <url>https://github.com/Ekryd/reflection-utils</url>
     <tag>HEAD</tag>
+    <url>https://github.com/Ekryd/reflection-utils</url>
   </scm>
   <issueManagement>
     <system>GitHub</system>

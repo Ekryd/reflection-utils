@@ -19,12 +19,13 @@ public class FieldHelperTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @Test
     public void gettingInheritedPrivateFieldShouldThrowException() throws Exception {
         expectedException.expect(NoSuchFieldException.class);
         expectedException.expectMessage(is("Cannot find visible field for class java.io.FileNotFoundException"));
 
-        new FieldHelper(new SubClass(), SubClass.class).getValue(FileNotFoundException.class);
+        new FieldHelper(new SubClass(), SubClass.class).getValueByType(FileNotFoundException.class);
     }
 
     @Test
@@ -32,7 +33,7 @@ public class FieldHelperTest {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage(is("Cannot match Object.class type parameter, you must specify it by name"));
 
-        new FieldHelper(new SubClass(), SubClass.class).setValue(new Object());
+        new FieldHelper(new SubClass(), SubClass.class).setValueByValue(new Object());
     }
 
     @Test
@@ -40,9 +41,9 @@ public class FieldHelperTest {
         SubClass instance = new SubClass();
         FieldHelper fieldHelper = new FieldHelper(instance, SubClass.class);
 
-        fieldHelper.setValue("anObject", new Object());
+        fieldHelper.setValueByName("anObject", new Object());
 
-        assertThat(fieldHelper.getValue("anObject"), not(nullValue()));
+        assertThat(fieldHelper.getValueByName("anObject"), not(nullValue()));
     }
 
     @Test
@@ -52,7 +53,7 @@ public class FieldHelperTest {
                 "Found too many (2) matches for field class java.lang.Float [aFloat, aFloat2], " +
                 "specify the field by name instead"));
 
-        new FieldHelper(new SubClass(), SubClass.class).getValue(Float.class);
+        new FieldHelper(new SubClass(), SubClass.class).getValueByType(Float.class);
     }
 
     @Test
@@ -60,7 +61,7 @@ public class FieldHelperTest {
         expectedException.expect(NoSuchFieldException.class);
         expectedException.expectMessage(is("Cannot find visible field for class java.lang.StringBuffer"));
 
-        new FieldHelper(new SubClass(), SubClass.class).setValue(new StringBuffer());
+        new FieldHelper(new SubClass(), SubClass.class).setValueByValue(new StringBuffer());
     }
 
     @Test
@@ -68,7 +69,7 @@ public class FieldHelperTest {
         expectedException.expect(NoSuchFieldException.class);
         expectedException.expectMessage(is("Cannot find visible field named gurka"));
 
-        new FieldHelper(new SubClass(), SubClass.class).setValue("gurka", "");
+        new FieldHelper(new SubClass(), SubClass.class).setValueByName("gurka", "");
     }
 
     @Test
@@ -77,7 +78,7 @@ public class FieldHelperTest {
         expectedException.expectMessage(is("Can not set java.lang.Runnable field refutils.testclasses.SubClass.override to java.lang.Integer"));
 
         FieldHelper fieldHelper = new FieldHelper(new SubClass(), SubClass.class);
-        fieldHelper.setValue("override", 43);
+        fieldHelper.setValueByName("override", 43);
     }
 
     @Test
@@ -85,9 +86,9 @@ public class FieldHelperTest {
         FieldClass instance = new FieldClass();
         FieldHelper fieldHelper = new FieldHelper(instance, FieldClass.class);
 
-        fieldHelper.setValue("superClass", new SubClass());
+        fieldHelper.setValueByName("superClass", new SubClass());
 
-        assertThat(fieldHelper.getValue("superClass"), not(nullValue()));
+        assertThat(fieldHelper.getValueByName("superClass"), not(nullValue()));
     }
 
     @Test
@@ -97,7 +98,7 @@ public class FieldHelperTest {
                 "Found too many (3) matches for field class refutils.testclasses.SubClass [anInterface, subClass, superClass], " +
                         "specify the field by name instead"));
 
-        new FieldHelper(new FieldClass(), FieldClass.class).getValue(SubClass.class);
+        new FieldHelper(new FieldClass(), FieldClass.class).getValueByType(SubClass.class);
     }
 
     @Test
@@ -107,7 +108,7 @@ public class FieldHelperTest {
                 "Found too many (2) matches for field class refutils.testclasses.SuperClass [anInterface, superClass], " +
                         "specify the field by name instead"));
 
-        new FieldHelper(new FieldClass(), FieldClass.class).getValue(SuperClass.class);
+        new FieldHelper(new FieldClass(), FieldClass.class).getValueByType(SuperClass.class);
     }
 
     @Test
@@ -115,14 +116,14 @@ public class FieldHelperTest {
         FieldClass instance = new FieldClass();
         FieldHelper fieldHelper = new FieldHelper(instance, FieldClass.class);
 
-        fieldHelper.setValue(new Interface() {
+        fieldHelper.setValueByValue(new Interface() {
             @Override
             public int interfaceMethod(long f) {
                 return 0;
             }
         });
 
-        assertThat(fieldHelper.getValue(Interface.class), not(nullValue()));
+        assertThat(fieldHelper.getValueByType(Interface.class), not(nullValue()));
     }
 
     @Test
@@ -139,11 +140,11 @@ public class FieldHelperTest {
         SubClass instance = new SubClass();
         FieldHelper fieldHelper = new FieldHelper(instance, SubClass.class);
 
-        fieldHelper.setValue(testValue);
+        fieldHelper.setValueByValue(testValue);
 
         fieldHelper = new FieldHelper(instance, SubClass.class);
 
-        assertThat(fieldHelper.getValue(testValue.getClass()), is(testValue));
+        assertThat(fieldHelper.getValueByType(testValue.getClass()), is(testValue));
     }
 
     @Test
@@ -152,9 +153,9 @@ public class FieldHelperTest {
         FieldHelper fieldHelper = new FieldHelper(instance, SubClass.class);
         File fieldValue = new File("gurka.txt");
 
-        fieldHelper.setValue(fieldValue);
+        fieldHelper.setValueByValue(fieldValue);
 
-        assertThat(fieldHelper.getValue(fieldValue.getClass()).toString(), is("gurka.txt"));
+        assertThat(fieldHelper.getValueByType(fieldValue.getClass()).toString(), is("gurka.txt"));
     }
     
     @Test
@@ -162,7 +163,15 @@ public class FieldHelperTest {
         SubClass instance = new SubClass();
         
         FieldHelper fieldHelper = new FieldHelper(instance, SuperClass.class);
-        fieldHelper.getValue("fnfex");
+        fieldHelper.getValueByName("fnfex");
+    }
+
+    @Test
+    public void privateNamedFieldsInSuperClassShouldBeReachable() throws Exception {
+        SubClass instance = new SubClass();
+        
+        FieldHelper fieldHelper = new FieldHelper(instance, SubClass.class);
+        fieldHelper.getValueByName("fnfex");
     }
 
     @Test
@@ -171,15 +180,15 @@ public class FieldHelperTest {
         FileNotFoundException ex = new FileNotFoundException("Gurka");
         
         FieldHelper fieldHelper = new FieldHelper(instance, SuperClass.class);
-        fieldHelper.setValue(ex);
+        fieldHelper.setValueByValue(ex);
         
         assertThat(getExceptionMessage(ex), is("Gurka"));
         assertThat(getExceptionMessage(instance.getFnfex()), is("Gurka"));
-        assertThat(getExceptionMessage(fieldHelper.getValue("fnfex")), is("Gurka"));
-        assertThat(getExceptionMessage(fieldHelper.getValue(FileNotFoundException.class)), is("Gurka"));
+        assertThat(getExceptionMessage(fieldHelper.getValueByName("fnfex")), is("Gurka"));
+        assertThat(getExceptionMessage(fieldHelper.getValueByType(FileNotFoundException.class)), is("Gurka"));
 
         ex = new FileNotFoundException("Tomat");
-        fieldHelper.setValue("fnfex", ex);
+        fieldHelper.setValueByName("fnfex", ex);
 
         assertThat(getExceptionMessage(instance.getFnfex()), is("Tomat"));
     }
@@ -220,9 +229,9 @@ public class FieldHelperTest {
         SubClass instance = new SubClass();
         FieldHelper fieldHelper = new FieldHelper(instance, SubClass.class);
 
-        fieldHelper.setValue("anObject", new Object());
+        fieldHelper.setValueByName("anObject", new Object());
 
-        assertThat(fieldHelper.getValue("anObject"), not(nullValue()));
+        assertThat(fieldHelper.getValueByName("anObject"), not(nullValue()));
     }
     
 }
