@@ -27,8 +27,7 @@ public class ReflectionHelperTest {
         assertThat(instance.getLongPrivate(), is(42L));
 
         reflectionHelper = new ReflectionHelper(instance);
-        assertThat((Long) reflectionHelper.getField("longPrivate"), is(42L));
-        assertThat(reflectionHelper.getField(Long.class), is(42L));
+        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "longPrivate", Long.class, 42L);
     }
 
     @Test
@@ -40,8 +39,7 @@ public class ReflectionHelperTest {
         assertThat(instance.getStringPrivate(), is("Gurka"));
 
         reflectionHelper = new ReflectionHelper(instance);
-        assertThat((String) reflectionHelper.getField("stringPrivate"), is("Gurka"));
-        assertThat(reflectionHelper.getField(String.class), is("Gurka"));
+        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "stringPrivate", String.class, "Gurka");
     }
 
     @Test
@@ -51,6 +49,8 @@ public class ReflectionHelperTest {
         reflectionHelper.setField(34);
 
         assertThat(instance.getIntPackage(), is(34));
+        reflectionHelper = new ReflectionHelper(instance);
+        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "intPackage", Integer.class, 34);
     }
 
     @Test
@@ -58,65 +58,82 @@ public class ReflectionHelperTest {
         SubClass instance = new SubClass();
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
         reflectionHelper.setField("intPackage", 34);
-
+        
         assertThat(instance.getIntPackage(), is(34));
+
+        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "intPackage", Integer.class, 34);
     }
 
     @Test
     public void privateFieldsInSuperClassShouldBeReachable() {
         SubClass instance = new SubClass();
 
-        new ReflectionHelper(instance, SuperClass.class).setField(new FileNotFoundException("Gurka"));
-        FileNotFoundException field = new ReflectionHelper(instance, SuperClass.class).getField(FileNotFoundException.class);
+        FileNotFoundException fileNotFoundException = new FileNotFoundException("Gurka");
+        new ReflectionHelper(instance, SuperClass.class).setField(fileNotFoundException);
 
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance, SuperClass.class);
+        FileNotFoundException field = reflectionHelper.getField(FileNotFoundException.class);
         assertThat(field.getMessage(), is("Gurka"));
+
+        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "fnfex", FileNotFoundException.class, fileNotFoundException);
+    }
+
+    @Test
+    public void privateNamedFieldsInSuperClassShouldBeReachable() {
+        SubClass instance = new SubClass();
+
+        FileNotFoundException fileNotFoundException = new FileNotFoundException("Gurka");
+        new ReflectionHelper(instance, SuperClass.class).setField("fnfex", fileNotFoundException);
+
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance, SuperClass.class);
+        FileNotFoundException field = (FileNotFoundException) reflectionHelper.getField("fnfex");
+        assertThat(field.getMessage(), is("Gurka"));
+
+        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "fnfex", FileNotFoundException.class, fileNotFoundException);
     }
 
     @Test
     public void settingFinalNonStaticFieldShouldWork() {
         SubClass instance = new SubClass();
 
+        new ReflectionHelper(instance).setField("state", Thread.State.TIMED_WAITING);
+
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        reflectionHelper.setField("state", Thread.State.TIMED_WAITING);
-        ReflectionHelper reflectionHelper2 = new ReflectionHelper(instance);
-        Thread.State actual = (Thread.State) reflectionHelper2.getField("state");
-        
-        assertThat(actual, is(Thread.State.TIMED_WAITING));
+        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "state", Thread.State.class, Thread.State.TIMED_WAITING);
     }
 
     @Test
     public void settingFinalNonStaticFieldShouldWork2() {
         SubClass instance = new SubClass();
 
+        new ReflectionHelper(instance).setField(Thread.State.TIMED_WAITING);
+
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        reflectionHelper.setField(Thread.State.TIMED_WAITING);
-        ReflectionHelper reflectionHelper2 = new ReflectionHelper(instance);
-        Thread.State actual = reflectionHelper2.getField(Thread.State.class);
-        
-        assertThat(actual, is(Thread.State.TIMED_WAITING));
+        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "state", Thread.State.class, Thread.State.TIMED_WAITING);
     }
 
     @Test
-    public void settingFinalStaticFieldShouldThrowException() {
+    public void settingFinalStaticFieldShouldWork() {
         SubClass instance = new SubClass();
 
+        new ReflectionHelper(instance).setField("FINAL_FIELD", TimeUnit.MINUTES);
+
         ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        reflectionHelper.setField("FINAL_FIELD", TimeUnit.MINUTES);
-        ReflectionHelper reflectionHelper2 = new ReflectionHelper(instance);
-        TimeUnit actual = (TimeUnit) reflectionHelper2.getField("FINAL_FIELD");
-        
-        assertThat(actual, is(TimeUnit.MINUTES));
+        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "FINAL_FIELD", TimeUnit.class, TimeUnit.MINUTES);
     }
 
     @Test
-    public void settingFinalStaticFieldShouldThrowException2() {
+    public void settingFinalStaticFieldShouldWork2() {
         SubClass instance = new SubClass();
 
-        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        reflectionHelper.setField(TimeUnit.MINUTES);
-        ReflectionHelper reflectionHelper2 = new ReflectionHelper(instance);
-        TimeUnit actual = reflectionHelper2.getField(TimeUnit.class);
+        new ReflectionHelper(instance).setField(TimeUnit.MINUTES);
         
-        assertThat(actual, is(TimeUnit.MINUTES));
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
+        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "FINAL_FIELD", TimeUnit.class, TimeUnit.MINUTES);
+    }
+
+    private void assertGetFieldWithBothTypedAndNamed(ReflectionHelper helper, String fieldName, Class fieldType, Object expectedFieldValue) {
+        assertThat(helper.getField(fieldName), is(expectedFieldValue));
+        assertThat(helper.getField(fieldType), is(expectedFieldValue));
     }
 }
