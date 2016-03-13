@@ -3,6 +3,7 @@ package refutils.util;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import refutils.ReflectionHelper;
 import refutils.testclasses.*;
 
 import java.io.File;
@@ -19,21 +20,12 @@ public class FieldHelperTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
-    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
-    @Test
-    public void gettingInheritedPrivateFieldShouldThrowException() throws Exception {
-        expectedException.expect(NoSuchFieldException.class);
-        expectedException.expectMessage(is("Cannot find visible field for class java.io.FileNotFoundException"));
-
-        new FieldHelper(new SubClass(), SubClass.class).getValueByType(FileNotFoundException.class);
-    }
-
     @Test
     public void objectInstanceShouldNotBeSetWithClassReference() throws Exception {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage(is("Cannot match Object.class type parameter, you must specify it by name"));
 
-        new FieldHelper(new SubClass(), SubClass.class).setValueByValue(new Object());
+        new FieldHelper(new SubClass(), SubClass.class).setValueByType(new Object());
     }
 
     @Test
@@ -61,7 +53,7 @@ public class FieldHelperTest {
         expectedException.expect(NoSuchFieldException.class);
         expectedException.expectMessage(is("Cannot find visible field for class java.lang.StringBuffer"));
 
-        new FieldHelper(new SubClass(), SubClass.class).setValueByValue(new StringBuffer());
+        new FieldHelper(new SubClass(), SubClass.class).setValueByType(new StringBuffer());
     }
 
     @Test
@@ -116,7 +108,7 @@ public class FieldHelperTest {
         FieldClass instance = new FieldClass();
         FieldHelper fieldHelper = new FieldHelper(instance, FieldClass.class);
 
-        fieldHelper.setValueByValue(new Interface() {
+        fieldHelper.setValueByType(new Interface() {
             @Override
             public int interfaceMethod(long f) {
                 return 0;
@@ -140,7 +132,7 @@ public class FieldHelperTest {
         SubClass instance = new SubClass();
         FieldHelper fieldHelper = new FieldHelper(instance, SubClass.class);
 
-        fieldHelper.setValueByValue(testValue);
+        fieldHelper.setValueByType(testValue);
 
         fieldHelper = new FieldHelper(instance, SubClass.class);
 
@@ -153,25 +145,26 @@ public class FieldHelperTest {
         FieldHelper fieldHelper = new FieldHelper(instance, SubClass.class);
         File fieldValue = new File("gurka.txt");
 
-        fieldHelper.setValueByValue(fieldValue);
+        fieldHelper.setValueByType(fieldValue);
 
         assertThat(fieldHelper.getValueByType(fieldValue.getClass()).toString(), is("gurka.txt"));
     }
     
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @Test
-    public void privateFieldsInSuperClassShouldBeReachable() throws Exception {
+    public void privateTypedFieldsInSuperClassShouldBeReachable() throws Exception {
         SubClass instance = new SubClass();
-        
-        FieldHelper fieldHelper = new FieldHelper(instance, SuperClass.class);
-        fieldHelper.getValueByName("fnfex");
+
+        new FieldHelper(instance, SubClass.class).getValueByType(FileNotFoundException.class);
+        new FieldHelper(instance, SuperClass.class).getValueByType(FileNotFoundException.class);
     }
 
     @Test
     public void privateNamedFieldsInSuperClassShouldBeReachable() throws Exception {
         SubClass instance = new SubClass();
-        
-        FieldHelper fieldHelper = new FieldHelper(instance, SubClass.class);
-        fieldHelper.getValueByName("fnfex");
+
+        new FieldHelper(instance, SubClass.class).getValueByName("fnfex");
+        new FieldHelper(instance, SuperClass.class).getValueByName("fnfex");
     }
 
     @Test
@@ -179,8 +172,8 @@ public class FieldHelperTest {
         SubClass instance = new SubClass();
         FileNotFoundException ex = new FileNotFoundException("Gurka");
         
-        FieldHelper fieldHelper = new FieldHelper(instance, SuperClass.class);
-        fieldHelper.setValueByValue(ex);
+        FieldHelper fieldHelper = new FieldHelper(instance, SubClass.class);
+        fieldHelper.setValueByType(ex);
         
         assertThat(getExceptionMessage(ex), is("Gurka"));
         assertThat(getExceptionMessage(instance.getFnfex()), is("Gurka"));
@@ -234,4 +227,32 @@ public class FieldHelperTest {
         assertThat(fieldHelper.getValueByName("anObject"), not(nullValue()));
     }
     
+    @Test
+    public void settingOverridenVariableInSuperClassShouldNotAffectSubClass() {
+        SubClass instance = new SubClass();
+        Runnable gurka = new Runnable() {
+            public void run() {}
+            
+            public String toString() { return "gurka"; }
+        };
+        Runnable tomat = new Runnable() {
+            public void run() {}
+            
+            public String toString() { return "tomat"; }
+        };
+
+        assertThat(instance.getOverride(), nullValue());
+        
+        new ReflectionHelper(instance, SuperClass.class).setField(gurka);
+        assertThat(instance.getOverride(), nullValue());
+        assertThat(instance.getSuperOverride().toString(), is("gurka"));
+        
+        new ReflectionHelper(instance, SuperClass.class).setField("override", tomat);
+        assertThat(instance.getOverride(), nullValue());
+        assertThat(instance.getSuperOverride().toString(), is("tomat"));
+        
+        new ReflectionHelper(instance).setField(gurka);
+        assertThat(instance.getOverride().toString(), is("gurka"));
+        assertThat(instance.getSuperOverride().toString(), is("tomat"));
+    }
 }

@@ -75,7 +75,7 @@ public final class ReflectionHelper {
     public void setField(final Object fieldValue) {
         try {
             FieldHelper fieldHelper = new FieldHelper(instance, fieldDefinitions);
-            fieldHelper.setValueByValue(fieldValue);
+            fieldHelper.setValueByType(fieldValue);
         } catch (IllegalAccessException ex) {
             throw new ReflectionHelperException(ex);
         } catch (NoSuchFieldException ex) {

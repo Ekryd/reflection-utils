@@ -71,9 +71,9 @@ public class ReflectionHelperTest {
         SubClass instance = new SubClass();
 
         FileNotFoundException fileNotFoundException = new FileNotFoundException("Gurka");
-        new ReflectionHelper(instance, SuperClass.class).setField(fileNotFoundException);
+        new ReflectionHelper(instance).setField(fileNotFoundException);
 
-        ReflectionHelper reflectionHelper = new ReflectionHelper(instance, SuperClass.class);
+        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
         FileNotFoundException field = reflectionHelper.getField(FileNotFoundException.class);
         assertThat(field.getMessage(), is("Gurka"));
 

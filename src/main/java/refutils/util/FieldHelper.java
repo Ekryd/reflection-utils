@@ -64,7 +64,7 @@ public class FieldHelper {
     public <T> T getValueByType(Class<T> valueClass) throws IllegalAccessException, NoSuchFieldException {
         checkForObjectValueClass(valueClass);
 
-        Field field = getFieldByType(valueClass);
+        Field field = getFieldByType(valueClass, classContainingField, allFields);
         MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
 
         Object returnValue = field.get(instance);
@@ -98,28 +98,15 @@ public class FieldHelper {
      * @throws IllegalAccessException if the underlying field is inaccessible.
      * @throws NoSuchFieldException   thrown if field cannot be located
      */
-    public void setValueByValue(Object value) throws IllegalAccessException, NoSuchFieldException {
+    public void setValueByType(Object value) throws IllegalAccessException, NoSuchFieldException {
         checkForObjectValueClass(value.getClass());
 
-        Field field = getFieldByType(value.getClass());
+        Field field = getFieldByType(value.getClass(), classContainingField, allFields);
         MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
 
         field.set(instance, value);
 
         makeFieldAccessible.restoreAccessState();
-    }
-
-    private Field getFieldByName(String fieldName, Class<?> classContainingField, Collection<Field> classFields) throws NoSuchFieldException {
-        for (Field potentialField : classFields) {
-            if (potentialField.getName().equals(fieldName)) {
-                return potentialField;
-            }
-        }
-        Class<?> superclass = classContainingField.getSuperclass();
-        if (superclass == null) {
-            throw new NoSuchFieldException(String.format("Cannot find visible field named %s", fieldName));
-        }
-        return getFieldByName(fieldName, superclass, new FieldExtractor(superclass).getAllFields());
     }
 
     private void checkForObjectValueClass(Class valueClass) {
@@ -128,19 +115,39 @@ public class FieldHelper {
         }
     }
 
-    private Field getFieldByType(Class valueClass) throws NoSuchFieldException {
-        Collection<Field> matchingFields = allFields;
-
-        matchingFields = filterOnTypeMatches(matchingFields, valueClass);
-        if (matchingFields.isEmpty()) {
-            throw new NoSuchFieldException(String.format("Cannot find visible field for %s", valueClass));
+    private Field getFieldByName(String fieldName, Class<?> classContainingField, Collection<Field> classFields) throws NoSuchFieldException {
+        for (Field potentialField : classFields) {
+            if (potentialField.getName().equals(fieldName)) {
+                return potentialField;
+            }
         }
+
+        Class<?> superclass = classContainingField.getSuperclass();
+        if (superclass == null) {
+            throw new NoSuchFieldException(String.format("Cannot find visible field named %s", fieldName));
+        }
+
+        return getFieldByName(fieldName, superclass, new FieldExtractor(superclass).getAllFields());
+    }
+
+    private Field getFieldByType(Class valueClass, Class<?> classContainingField, Collection<Field> classFields) throws NoSuchFieldException {
+        Collection<Field> matchingFields = filterOnTypeMatches(classFields, valueClass);
+
         if (matchingFields.size() > 1) {
             throw new IllegalArgumentException(String.format("Found too many (%s) matches for field %s %s, specify the field by name instead", matchingFields.size(),
                     valueClass, extractFieldNames(matchingFields)));
         }
 
-        return matchingFields.iterator().next();
+        if (matchingFields.size() == 1) {
+            return matchingFields.iterator().next();
+        }
+
+        Class<?> superclass = classContainingField.getSuperclass();
+        if (superclass == null) {
+            throw new NoSuchFieldException(String.format("Cannot find visible field for %s", valueClass));
+        }
+
+        return getFieldByType(valueClass, superclass, new FieldExtractor(superclass).getAllFields());
     }
 
     private Collection<Field> filterOnTypeMatches(Collection<Field> matchingFields, Class valueClass) {
