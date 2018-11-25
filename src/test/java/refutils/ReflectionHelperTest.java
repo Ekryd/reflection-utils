@@ -6,10 +6,9 @@ import refutils.testclasses.SuperClass;
 import refutils.testclasses.SuperSuperClass;
 
 import java.io.FileNotFoundException;
-import java.util.concurrent.TimeUnit;
 
-import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 public class ReflectionHelperTest {
@@ -119,11 +118,11 @@ public class ReflectionHelperTest {
         reflectionHelper.setField("stringPrivate", "another String");
 
         reflectionHelper = new ReflectionHelper(instance);
-        assertThat((String) reflectionHelper.getField("superSneakyField"), is("Find me!"));
-        assertThat((String) reflectionHelper.getField("stringPrivate"), is("another String"));
-        assertThat((String) reflectionHelper.getField("stringPrivate2"), is("a String"));
-        assertThat((String) reflectionHelper.getField("stringPrivate"), is("another String"));
-        assertThat((String) reflectionHelper.getField("superSneakyField"), is("Find me!"));
+        assertThat(reflectionHelper.getField("superSneakyField"), is("Find me!"));
+        assertThat(reflectionHelper.getField("stringPrivate"), is("another String"));
+        assertThat(reflectionHelper.getField("stringPrivate2"), is("a String"));
+        assertThat(reflectionHelper.getField("stringPrivate"), is("another String"));
+        assertThat(reflectionHelper.getField("superSneakyField"), is("Find me!"));
     }
 
     @Test
@@ -146,25 +145,6 @@ public class ReflectionHelperTest {
         assertGetFieldWithBothTypedAndNamed(reflectionHelper, "state", Thread.State.class, Thread.State.TIMED_WAITING);
     }
 
-    @Test
-    public void settingFinalStaticFieldShouldWork() {
-        SubClass instance = new SubClass();
-
-        new ReflectionHelper(instance).setField("FINAL_FIELD", TimeUnit.MINUTES);
-
-        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "FINAL_FIELD", TimeUnit.class, TimeUnit.MINUTES);
-    }
-
-    @Test
-    public void settingFinalStaticFieldShouldWork2() {
-        SubClass instance = new SubClass();
-
-        new ReflectionHelper(instance).setField(TimeUnit.MINUTES);
-
-        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "FINAL_FIELD", TimeUnit.class, TimeUnit.MINUTES);
-    }
 
     private void assertGetFieldWithBothTypedAndNamed(ReflectionHelper helper, String fieldName, Class fieldType, Object expectedFieldValue) {
         assertThat(helper.getField(fieldName), is(expectedFieldValue));

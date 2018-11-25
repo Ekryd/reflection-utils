@@ -9,10 +9,11 @@ env:
 install: mvn install -Ddev
 
 jdk:
-  - openjdk6
   - openjdk7
   - oraclejdk7
   - oraclejdk8
+  - oraclejdk9
+  - oraclejdk11
 
 addons:
   coverity_scan:

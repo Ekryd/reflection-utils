@@ -42,7 +42,7 @@ public class FieldHelper {
      */
     public Object getValueByName(String fieldName) throws IllegalAccessException, NoSuchFieldException {
         Field field = getFieldByName(fieldName, classContainingField, allFields);
-        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
+        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field, instance);
 
         Object returnValue = field.get(instance);
 
@@ -65,7 +65,7 @@ public class FieldHelper {
         checkForObjectValueClass(valueClass);
 
         Field field = getFieldByType(valueClass, classContainingField, allFields);
-        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
+        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field, instance);
 
         Object returnValue = field.get(instance);
 
@@ -84,7 +84,7 @@ public class FieldHelper {
      */
     public void setValueByName(String fieldName, Object value) throws IllegalAccessException, NoSuchFieldException {
         Field field = getFieldByName(fieldName, classContainingField, allFields);
-        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
+        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field, instance);
 
         field.set(instance, value);
 
@@ -102,7 +102,7 @@ public class FieldHelper {
         checkForObjectValueClass(value.getClass());
 
         Field field = getFieldByType(value.getClass(), classContainingField, allFields);
-        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
+        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field, instance);
 
         field.set(instance, value);
 
@@ -151,7 +151,7 @@ public class FieldHelper {
     }
 
     private Collection<Field> filterOnTypeMatches(Collection<Field> matchingFields, Class valueClass) {
-        List<Field> returnValue = new ArrayList<Field>();
+        List<Field> returnValue = new ArrayList<>();
         PrimitiveMatcher primitiveMatcher = new PrimitiveMatcher(valueClass);
 
         for (Field matchingField : matchingFields) {
@@ -163,7 +163,7 @@ public class FieldHelper {
     }
 
     private String extractFieldNames(Collection<Field> matchingFields) {
-        List<String> fieldNames = new ArrayList<String>();
+        List<String> fieldNames = new ArrayList<>();
         for (Field matchingField : matchingFields) {
             fieldNames.add(matchingField.getName());
         }
