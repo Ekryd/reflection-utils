@@ -53,15 +53,11 @@ public final class ReflectionHelper {
      */
     public static <T> T instantiatePrivateConstructor(final Class<T> clazz) {
         try {
-            return new ConstructorHelper<T>(clazz).instantiatePrivate();
-        } catch (NoSuchMethodException ex) {
+            return new ConstructorHelper<>(clazz).instantiatePrivate();
+        } catch (NoSuchMethodException | InstantiationException | InvocationTargetException ex) {
             throw ReflectionHelperException.createCannotInstantiateClass(clazz, ex);
         } catch (IllegalAccessException ex) {
             throw new IllegalStateException("This should never happen, since the constructor is always made accessible", ex);
-        } catch (InvocationTargetException ex) {
-            throw ReflectionHelperException.createCannotInstantiateClass(clazz, ex);
-        } catch (InstantiationException ex) {
-            throw ReflectionHelperException.createCannotInstantiateClass(clazz, ex);
         }
     }
 
@@ -76,9 +72,7 @@ public final class ReflectionHelper {
         try {
             FieldHelper fieldHelper = new FieldHelper(instance, fieldDefinitions);
             fieldHelper.setValueByType(fieldValue);
-        } catch (IllegalAccessException ex) {
-            throw new ReflectionHelperException(ex);
-        } catch (NoSuchFieldException ex) {
+        } catch (IllegalAccessException | NoSuchFieldException ex) {
             throw new ReflectionHelperException(ex);
         }
     }
@@ -94,9 +88,7 @@ public final class ReflectionHelper {
         try {
             FieldHelper fieldHelper = new FieldHelper(instance, fieldDefinitions);
             fieldHelper.setValueByName(fieldName, fieldValue);
-        } catch (IllegalAccessException ex) {
-            throw new ReflectionHelperException(ex);
-        } catch (NoSuchFieldException ex) {
+        } catch (IllegalAccessException | NoSuchFieldException ex) {
             throw new ReflectionHelperException(ex);
         }
     }

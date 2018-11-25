@@ -8,8 +8,8 @@ import refutils.testclasses.SuperSuperClass;
 import java.io.FileNotFoundException;
 import java.util.concurrent.TimeUnit;
 
-import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 public class ReflectionHelperTest {
@@ -65,7 +65,6 @@ public class ReflectionHelperTest {
         assertGetFieldWithBothTypedAndNamed(reflectionHelper, "intPackage", Integer.class, 34);
     }
 
-    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @Test
     public void privateFieldsInSuperClassShouldBeReachable() {
         SubClass instance = new SubClass();
@@ -166,7 +165,7 @@ public class ReflectionHelperTest {
         assertGetFieldWithBothTypedAndNamed(reflectionHelper, "FINAL_FIELD", TimeUnit.class, TimeUnit.MINUTES);
     }
 
-    private void assertGetFieldWithBothTypedAndNamed(ReflectionHelper helper, String fieldName, Class fieldType, Object expectedFieldValue) {
+    private void assertGetFieldWithBothTypedAndNamed(ReflectionHelper helper, String fieldName, Class<?> fieldType, Object expectedFieldValue) {
         assertThat(helper.getField(fieldName), is(expectedFieldValue));
         assertThat(helper.getField(fieldType), is(expectedFieldValue));
     }

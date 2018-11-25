@@ -12,7 +12,7 @@ import java.util.Map;
 class PrimitiveMatcher {
     private final Class matchedPrimitiveType;
 
-    private static final Map<Class, Class> PRIMITIVE_CLASSES_MAP = new LinkedHashMap<Class, Class>();
+    private static final Map<Class, Class> PRIMITIVE_CLASSES_MAP = new LinkedHashMap<>();
 
     static {
         // Populate map with all java primitives and their corresponding autoboxing class.

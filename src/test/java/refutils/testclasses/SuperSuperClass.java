@@ -3,6 +3,7 @@ package refutils.testclasses;
 /**
  * Testclass
  */
+@SuppressWarnings("unused")
 public class SuperSuperClass {
     private String superSneakyField;
 

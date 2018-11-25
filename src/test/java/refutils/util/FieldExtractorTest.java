@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThat;
 public class FieldExtractorTest {
 
     @Test
-    public void classWithoutSuperClassShouldNotCrash() throws Exception {
+    public void classWithoutSuperClassShouldNotCrash() {
         FieldExtractor fieldExtractor = new FieldExtractor(Object.class);
         assertThat(fieldExtractor.getAllFields(), not(nullValue()));
     }

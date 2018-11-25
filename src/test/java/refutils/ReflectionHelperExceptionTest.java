@@ -46,6 +46,7 @@ public class ReflectionHelperExceptionTest {
         ReflectionHelper.instantiatePrivateConstructor(SneakyConstructor.class);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     public void nullInstanceShouldThrowException() {
         expectedException.expect(NullPointerException.class);

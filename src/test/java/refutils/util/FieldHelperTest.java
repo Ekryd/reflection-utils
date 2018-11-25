@@ -108,12 +108,7 @@ public class FieldHelperTest {
         FieldClass instance = new FieldClass();
         FieldHelper fieldHelper = new FieldHelper(instance, FieldClass.class);
 
-        fieldHelper.setValueByType(new Interface() {
-            @Override
-            public int interfaceMethod(long f) {
-                return 0;
-            }
-        });
+        fieldHelper.setValueByType((Interface) f -> 0);
 
         assertThat(fieldHelper.getValueByType(Interface.class), not(nullValue()));
     }
@@ -150,7 +145,6 @@ public class FieldHelperTest {
         assertThat(fieldHelper.getValueByType(fieldValue.getClass()).toString(), is("gurka.txt"));
     }
     
-    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @Test
     public void privateTypedFieldsInSuperClassShouldBeReachable() throws Exception {
         SubClass instance = new SubClass();
@@ -191,7 +185,7 @@ public class FieldHelperTest {
     }
 
     @Test
-    public void checkThatSubclassIsCorrect() throws Exception {
+    public void checkThatSubclassIsCorrect() {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage("Instance of SubClass is not a subclass of SneakyConstructor");
         
@@ -200,7 +194,7 @@ public class FieldHelperTest {
     }
 
     @Test
-    public void checkThatSubclassIsCorrect2() throws Exception {
+    public void checkThatSubclassIsCorrect2() {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage("Instance of SubClass is not a subclass of String");
         
@@ -209,7 +203,7 @@ public class FieldHelperTest {
     }
 
     @Test
-    public void checkThatSubclassIsCorrect3() throws Exception {
+    public void checkThatSubclassIsCorrect3() {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage("Instance of SuperClass is not a subclass of SubClass");
         

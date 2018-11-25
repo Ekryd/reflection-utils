@@ -13,7 +13,7 @@ import java.util.TreeSet;
  * Internal fields in classes from Sun are not available
  */
 class FieldExtractor {
-    private final Set<Field> allFields = new TreeSet<Field>(new FieldComparator());
+    private final Set<Field> allFields = new TreeSet<>(new FieldComparator());
     private final Class instanceClass;
 
     /**

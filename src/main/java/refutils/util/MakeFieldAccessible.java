@@ -24,14 +24,12 @@ class MakeFieldAccessible {
         accessibleState = field.isAccessible();
         field.setAccessible(true);
 
-        if (Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers())) {
+        if (fieldIsStaticField && Modifier.isFinal(field.getModifiers())) {
             try {
                 staticFinalModifierField = Field.class.getDeclaredField("modifiers");
                 staticFinalModifierField.setAccessible(true);
                 staticFinalModifierField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-            } catch (NoSuchFieldException ex) {
-                throw new IllegalStateException("Internal error: Could not make " + field.toGenericString() + " accessable", ex);
-            } catch (IllegalAccessException ex) {
+            } catch (NoSuchFieldException | IllegalAccessException ex) {
                 throw new IllegalStateException("Internal error: Could not make " + field.toGenericString() + " accessable", ex);
             }
 

@@ -7,7 +7,8 @@ import refutils.testclasses.SuperClass;
 
 import java.lang.reflect.InvocationTargetException;
 
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertNotNull;
+
 
 @SuppressWarnings("unchecked")
 public class ConstructorHelperTest {
