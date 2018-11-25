@@ -9,9 +9,6 @@ env:
 install: mvn install -Ddev
 
 jdk:
-  - openjdk7
-  - oraclejdk7
-  - oraclejdk8
   - oraclejdk9
   - oraclejdk11
 
