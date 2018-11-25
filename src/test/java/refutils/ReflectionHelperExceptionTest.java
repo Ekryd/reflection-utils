@@ -6,7 +6,6 @@ import org.junit.rules.ExpectedException;
 import refutils.testclasses.*;
 
 import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.Matchers.is;
 
@@ -95,14 +94,4 @@ public class ReflectionHelperExceptionTest {
         reflectionHelper.getField(Calendar.class);
     }
 
-    @Test
-    public void settingFinalStaticFieldDoesNotWork() {
-        expectedException.expect(IllegalStateException.class);
-        expectedException.expectMessage(is("Since JDK9 it is no longer possible to modify static final fields. " +
-                "Could not make private static final java.util.concurrent.TimeUnit refutils.testclasses.SubClass.FINAL_FIELD " +
-                "accessable"));
-
-        SubClass instance = new SubClass();
-        new ReflectionHelper(instance).setField("FINAL_FIELD", TimeUnit.MINUTES);
-    }
 }

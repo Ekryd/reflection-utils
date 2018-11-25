@@ -10,26 +10,38 @@ import java.lang.reflect.Modifier;
 class MakeFieldAccessible {
     private final Field field;
     private final boolean accessibleState;
+    private Field staticFinalModifierField = null;
 
     /**
      * Creates entity and makes the field supplied accessible to set values.
      *
      * @param field the field to modify
-     * @param instance the instance containing the field
      */
-    MakeFieldAccessible(Field field, Object instance) {
+    MakeFieldAccessible(Field field) {
         this.field = field;
         boolean fieldIsStaticField = Modifier.isStatic(field.getModifiers());
 
-        accessibleState = field.canAccess(fieldIsStaticField ? null : instance);
+        accessibleState = field.isAccessible();
         field.setAccessible(true);
 
-        if (fieldIsStaticField && Modifier.isFinal(field.getModifiers())) {
-            throw new IllegalStateException("Since JDK9 it is no longer possible to modify static final fields. Could not make " + field.toGenericString() + " accessable");
+        if (Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers())) {
+            try {
+                staticFinalModifierField = Field.class.getDeclaredField("modifiers");
+                staticFinalModifierField.setAccessible(true);
+                staticFinalModifierField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+            } catch (NoSuchFieldException ex) {
+                throw new IllegalStateException("Internal error: Could not make " + field.toGenericString() + " accessable", ex);
+            } catch (IllegalAccessException ex) {
+                throw new IllegalStateException("Internal error: Could not make " + field.toGenericString() + " accessable", ex);
+            }
+
         }
     }
 
-    void restoreAccessState() {
+    void restoreAccessState() throws IllegalAccessException {
         field.setAccessible(accessibleState);
+        if (staticFinalModifierField != null) {
+            staticFinalModifierField.setInt(field, field.getModifiers() | ~Modifier.FINAL);
+        }
     }
 }

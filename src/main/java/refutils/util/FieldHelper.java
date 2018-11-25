@@ -42,7 +42,7 @@ public class FieldHelper {
      */
     public Object getValueByName(String fieldName) throws IllegalAccessException, NoSuchFieldException {
         Field field = getFieldByName(fieldName, classContainingField, allFields);
-        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field, instance);
+        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
 
         Object returnValue = field.get(instance);
 
@@ -65,7 +65,7 @@ public class FieldHelper {
         checkForObjectValueClass(valueClass);
 
         Field field = getFieldByType(valueClass, classContainingField, allFields);
-        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field, instance);
+        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
 
         Object returnValue = field.get(instance);
 
@@ -84,7 +84,7 @@ public class FieldHelper {
      */
     public void setValueByName(String fieldName, Object value) throws IllegalAccessException, NoSuchFieldException {
         Field field = getFieldByName(fieldName, classContainingField, allFields);
-        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field, instance);
+        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
 
         field.set(instance, value);
 
@@ -102,7 +102,7 @@ public class FieldHelper {
         checkForObjectValueClass(value.getClass());
 
         Field field = getFieldByType(value.getClass(), classContainingField, allFields);
-        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field, instance);
+        MakeFieldAccessible makeFieldAccessible = new MakeFieldAccessible(field);
 
         field.set(instance, value);
 

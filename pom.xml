@@ -13,7 +13,7 @@
   </prerequisites>
 
   <properties>
-    <compileSource>1.9</compileSource>
+    <compileSource>1.8</compileSource>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
