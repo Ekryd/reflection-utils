@@ -6,10 +6,10 @@ package refutils.testclasses;
  */
 @SuppressWarnings({"UnusedDeclaration", "FieldCanBeLocal"})
 public class SubClassToThread extends Thread {
-    private int something;
-    private final RuntimeException rex;
+  private int something;
+  private final RuntimeException rex;
 
-    public SubClassToThread(RuntimeException rex) {
-        this.rex = rex;
-    }
+  public SubClassToThread(RuntimeException rex) {
+    this.rex = rex;
+  }
 }

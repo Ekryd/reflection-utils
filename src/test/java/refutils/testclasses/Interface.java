@@ -6,5 +6,5 @@ package refutils.testclasses;
  */
 @SuppressWarnings({"UnusedDeclaration", "SameReturnValue"})
 public interface Interface {
-    int interfaceMethod(long f);
+  int interfaceMethod(long f);
 }
