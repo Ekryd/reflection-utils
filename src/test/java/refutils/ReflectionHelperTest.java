@@ -1,16 +1,15 @@
 package refutils;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+
+import java.io.FileNotFoundException;
+import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 import refutils.testclasses.SubClass;
 import refutils.testclasses.SuperClass;
 import refutils.testclasses.SuperSuperClass;
-
-import java.io.FileNotFoundException;
-import java.util.concurrent.TimeUnit;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 public class ReflectionHelperTest {
 
@@ -149,20 +148,9 @@ public class ReflectionHelperTest {
     public void settingFinalStaticFieldShouldWork() {
         SubClass instance = new SubClass();
 
-        new ReflectionHelper(instance).setField("FINAL_FIELD", TimeUnit.MINUTES);
-
-        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "FINAL_FIELD", TimeUnit.class, TimeUnit.MINUTES);
-    }
-
-    @Test
-    public void settingFinalStaticFieldShouldWork2() {
-        SubClass instance = new SubClass();
-
-        new ReflectionHelper(instance).setField(TimeUnit.MINUTES);
-
-        ReflectionHelper reflectionHelper = new ReflectionHelper(instance);
-        assertGetFieldWithBothTypedAndNamed(reflectionHelper, "FINAL_FIELD", TimeUnit.class, TimeUnit.MINUTES);
+        ReflectionHelper reflectionHelper1 = new ReflectionHelper(instance);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, ()-> reflectionHelper1.setField("FINAL_FIELD", TimeUnit.MINUTES));
+        assertThat(exception.getMessage(), is("Cannot make final static field accessible"));
     }
 
     private void assertGetFieldWithBothTypedAndNamed(ReflectionHelper helper, String fieldName, Class<?> fieldType, Object expectedFieldValue) {
