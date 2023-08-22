@@ -6,8 +6,7 @@ package refutils.testclasses;
  */
 @SuppressWarnings("UnusedDeclaration")
 public enum EnumType {
-    FIELD;
+  FIELD;
 
-    EnumType() {
-    }
+  EnumType() {}
 }

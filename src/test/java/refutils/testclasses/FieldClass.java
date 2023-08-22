@@ -6,8 +6,8 @@ package refutils.testclasses;
  */
 @SuppressWarnings("UnusedDeclaration")
 public class FieldClass {
-    private SuperClass superClass;
-    private SubClass subClass;
-    private AbstractClass abstractClass;
-    private Interface anInterface;
+  private SuperClass superClass;
+  private SubClass subClass;
+  private AbstractClass abstractClass;
+  private Interface anInterface;
 }

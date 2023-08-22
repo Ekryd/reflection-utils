@@ -1,13 +1,11 @@
 package refutils.testclasses;
 
-/**
- * Testclass
- */
+/** Testclass */
 @SuppressWarnings("unused")
 public class SuperSuperClass {
-    private String superSneakyField;
+  private String superSneakyField;
 
-    public String getSuperSneakyField() {
-        return superSneakyField;
-    }
+  public String getSuperSneakyField() {
+    return superSneakyField;
+  }
 }
