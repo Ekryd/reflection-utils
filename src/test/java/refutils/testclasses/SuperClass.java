@@ -3,62 +3,59 @@ package refutils.testclasses;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-/**
- * TestClass
- */
+/** TestClass */
 @SuppressWarnings("UnusedDeclaration")
 public class SuperClass extends SuperSuperClass implements Interface {
-    private long longPrivate;
-    private final byte bytePrivateFinal;
-    int intPackage;
-    protected boolean boolProtected;
-    private String stringPrivate;
-    protected Runnable override;
-    private FileNotFoundException fnfex;
-    public Object anObject;
-    protected Float aFloat;
-    protected float aFloat2;
-    protected static File file;
+  private long longPrivate;
+  private final byte bytePrivateFinal;
+  int intPackage;
+  protected boolean boolProtected;
+  private String stringPrivate;
+  protected Runnable override;
+  private FileNotFoundException fnfex;
+  public Object anObject;
+  protected Float aFloat;
+  protected float aFloat2;
+  protected static File file;
 
-    private SuperClass() {
-        bytePrivateFinal = 0;
-    }
+  private SuperClass() {
+    bytePrivateFinal = 0;
+  }
 
-    public SuperClass(byte bytePrivateFinal) {
-        this.bytePrivateFinal = bytePrivateFinal;
-    }
+  public SuperClass(byte bytePrivateFinal) {
+    this.bytePrivateFinal = bytePrivateFinal;
+  }
 
-    @Override
-    public int interfaceMethod(long f) {
-        return 0;
-    }
+  @Override
+  public int interfaceMethod(long f) {
+    return 0;
+  }
 
-    public boolean isBoolProtected() {
-        return boolProtected;
-    }
+  public boolean isBoolProtected() {
+    return boolProtected;
+  }
 
-    public int getIntPackage() {
-        return intPackage;
-    }
+  public int getIntPackage() {
+    return intPackage;
+  }
 
-    public long getLongPrivate() {
-        return longPrivate;
-    }
+  public long getLongPrivate() {
+    return longPrivate;
+  }
 
-    public String getStringPrivate() {
-        return stringPrivate;
-    }
+  public String getStringPrivate() {
+    return stringPrivate;
+  }
 
-    public byte getBytePrivateFinal() {
-        return bytePrivateFinal;
-    }
+  public byte getBytePrivateFinal() {
+    return bytePrivateFinal;
+  }
 
-    public Runnable getSuperOverride() {
-        return override;
-    }
+  public Runnable getSuperOverride() {
+    return override;
+  }
 
-    public FileNotFoundException getFnfex() {
-        return fnfex;
-    }
-
+  public FileNotFoundException getFnfex() {
+    return fnfex;
+  }
 }

@@ -5,7 +5,7 @@ package refutils.testclasses;
  * @since 15-03-15
  */
 public class SneakyConstructor {
-    SneakyConstructor() {
-        throw new NullPointerException("Nah! Don't wanna");
-    }
+  SneakyConstructor() {
+    throw new NullPointerException("Nah! Don't wanna");
+  }
 }
