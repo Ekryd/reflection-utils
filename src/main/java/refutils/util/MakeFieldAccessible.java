@@ -25,14 +25,7 @@ class MakeFieldAccessible {
         field.setAccessible(true);
 
         if (fieldIsStaticField && Modifier.isFinal(field.getModifiers())) {
-            try {
-                staticFinalModifierField = Field.class.getDeclaredField("modifiers");
-                staticFinalModifierField.setAccessible(true);
-                staticFinalModifierField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-            } catch (NoSuchFieldException | IllegalAccessException ex) {
-                throw new IllegalStateException("Internal error: Could not make " + field.toGenericString() + " accessable", ex);
-            }
-
+            throw new IllegalArgumentException("Cannot make final static field accessible");
         }
     }
 
