@@ -4,7 +4,7 @@
 
   <groupId>com.github.ekryd.reflection-utils</groupId>
   <artifactId>reflection-utils</artifactId>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.2.0</version>
   <name>Reflection utils</name>
   <description>A utility library to handle Java reflection with ease</description>
 
@@ -242,7 +242,7 @@
     <connection>scm:git:https://github.com/Ekryd/reflection-utils.git</connection>
     <developerConnection>scm:git:https://github.com/Ekryd/reflection-utils.git</developerConnection>
     <url>https://github.com/Ekryd/reflection-utils</url>
-    <tag>HEAD</tag>
+    <tag>reflection-utils-1.2.0</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>
