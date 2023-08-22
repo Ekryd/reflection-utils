@@ -5,6 +5,7 @@
   *                                                                            *
   *  mvn clean install           (to build)                                    *
   *                                                                            *
+  *  echo "test" | gpg --clearsign   (test the gpg first)                      *
   *  mvn release:clean           (to deploy)                                   *
   *  mvn release:prepare                                                       *
   *  mvn release:perform                                                       *
