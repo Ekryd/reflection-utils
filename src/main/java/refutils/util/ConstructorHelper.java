@@ -27,7 +27,9 @@ public final class ConstructorHelper<T> {
    *     an abstract class.
    */
   public T instantiatePrivate()
-      throws NoSuchMethodException, IllegalAccessException, InvocationTargetException,
+      throws NoSuchMethodException,
+          IllegalAccessException,
+          InvocationTargetException,
           InstantiationException {
     Constructor<T> constructor = clazz.getDeclaredConstructor();
     constructor.setAccessible(true);
