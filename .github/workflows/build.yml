@@ -53,10 +53,18 @@ jobs:
         shell: bash
         run: mvn --batch-mode clean verify
             
+  build-result:
+    if: always() && github.event_name == 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check that all matrix builds passed
+        run: test "${{ needs.build.result }}" = "success"
+
   merge:
     if: github.event_name == 'pull_request' && github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-result
 
     steps:
       - name: "[dependabot] Fetch metadata"
